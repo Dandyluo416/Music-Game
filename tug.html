@@ -33,9 +33,53 @@ main{display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;gap:7px;f
 @media(max-width:1170px){.brand small{display:none}.controls{grid-template-columns:1fr;gap:5px}.settings{gap:5px}.game-actions{justify-content:flex-end}.field label{font-size:.76rem}.board .answer{height:clamp(37px,6.2vh,48px)}.game-actions .btn{height:34px}.controls{padding:5px 8px}}
 @media(max-width:760px){html,body{overflow:auto;height:auto;min-height:100dvh}.game-top{height:auto;min-height:45px}.brand h1{font-size:1rem}.top-btn{font-size:.73rem;padding:6px 8px}main{display:flex;flex-direction:column}.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.boards{grid-template-columns:1fr}.board{min-height:300px}.staff{height:145px;min-height:145px}.game-actions{flex-wrap:wrap}.teamname{font-size:1rem}.clock{font-size:1.5rem}.score{padding:4px}.arena{min-height:105px}.tug{min-height:75px}.bottom{margin-bottom:8px}.brand small{display:none}}
 @media(prefers-reduced-motion:reduce){.puller,.crowd{animation:none}.knot,.puller{transition:none}}
+
+/* Electronic whiteboard compatibility patch: stage never depends on emoji fonts or clamp(). */
+.tug{height:82px;height:clamp(65px,10.9vh,96px);min-height:64px;flex-shrink:0}
+.arena{min-height:97px;overflow:visible}
+.puller{height:76%;width:110px;width:clamp(70px,10vw,118px);top:4%;font-size:0;overflow:visible;filter:none;white-space:normal}
+.puller svg{display:block;width:100%;height:100%;overflow:visible}
+.knot svg{display:block;width:100%;height:100%}
+.knot{display:flex;align-items:center;justify-content:center;line-height:1}
+.answer{height:44px;height:clamp(39px,6.8vh,53px)}
+.field select{min-height:33px}
+button,.answer{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+@media(max-width:1170px){
+ .controls{grid-template-columns:minmax(0,1fr) auto;gap:5px}
+ .settings{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+ .field label{font-size:.67rem;white-space:nowrap}
+ .game-actions{justify-content:flex-end;gap:4px}
+ .game-actions .btn{font-size:.73rem;padding:4px 7px;min-width:0}
+ .field select{font-size:.75rem}
+}
+@media(max-height:690px){
+ .game-top{min-height:35px;height:35px}
+ .controls{padding:4px 7px}
+ .arena{min-height:85px;padding:3px 8px}
+ .arena-title{font-size:.7rem}
+ .tug{height:65px;min-height:65px}
+ .ends{font-size:.64rem}
+ .board{grid-template-rows:auto minmax(65px,1fr) auto auto auto;gap:2px}
+ .board .answer{height:35px;min-height:35px}
+ .board .answers{gap:3px}
+ .bottom{min-height:28px}
+ .status{min-height:32px}
+}
+@media(max-height:550px) and (min-width:761px){
+ .tug{height:58px;min-height:58px}
+ .arena{min-height:77px}
+ .board{grid-template-rows:auto minmax(50px,1fr) auto auto auto;padding:3px 6px 2px}
+ .board .answer{height:30px;min-height:30px;font-size:.95rem}
+ .board .prompt{font-size:.73rem}
+ .status .clock{font-size:1.3rem}
+ .bottom{min-height:25px}
+}
+@media(max-width:760px){
+ .arena{min-height:95px}.tug{height:70px;min-height:70px}
+}
 </style></head>
 <body>
-<header class="game-top"><div class="brand"><h1>🪢 音符拔河大賽</h1><small>兩隊同步作答 · 認識音名／唱名</small></div><nav class="top-actions" aria-label="遊戲導覽"><a class="top-btn" href="index.html" id="backHome">⌂ 返回首頁</a><button class="top-btn" id="fullscreenBtn" type="button">⛶ 全螢幕</button></nav></header>
+<header class="game-top"><div class="brand"><h1>🪢 音符拔河大賽</h1><small>兩隊同步作答 · 白板相容版 1.1</small></div><nav class="top-actions" aria-label="遊戲導覽"><a class="top-btn" href="index.html" id="backHome">⌂ 返回首頁</a><button class="top-btn" id="fullscreenBtn" type="button">⛶ 全螢幕</button></nav></header>
 <main>
 <section class="panel controls" aria-label="遊戲設定"><div class="settings">
 <div class="field"><label for="duration">⏱ 比賽長度</label><select id="duration"><option value="180">3 分鐘</option><option value="300">5 分鐘</option></select></div>
@@ -44,7 +88,31 @@ main{display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;gap:7px;f
 <div class="field"><label for="difficulty">🎯 音符難度</label><select id="difficulty"><option value="easy">簡單（五線內）</option><option value="medium">普通（含下加線）</option><option value="hard" selected>困難（G3–G5）</option></select></div>
 </div><div class="game-actions"><button class="btn primary" id="start">▶ 開始</button><button class="btn secondary" id="reset">↺ 重設</button><button class="btn secondary" id="soundToggle" aria-pressed="true">🔊 音樂開啟</button></div></section>
 <section class="panel status"><div class="teamname redname">🔴 紅隊 <span class="score" id="rs">0 分</span></div><div class="clock"><div id="gameclock">03:00</div><small id="clocklabel">比賽剩餘時間</small></div><div class="teamname bluename"><span class="score" id="bs">0 分</span> 🔵 藍隊</div></section>
-<section class="panel arena"><div class="arena-title">🏟️ 拔河競技場 <span class="crowd" aria-hidden="true">👏 🎉 📣 👏 🎊</span></div><div class="tug"><div class="rope"></div><div class="mid"></div><div class="knot" id="knot">🚩</div><div class="puller redpull">🧑‍🤝‍🧑</div><div class="puller bluepull">🧑‍🤝‍🧑</div></div><div class="ends"><span>🔴 紅隊終點</span><span>中央線</span><span>藍隊終點 🔵</span></div></section>
+<section class="panel arena"><div class="arena-title">🏟️ 拔河競技場 <span class="crowd" aria-hidden="true">👏 🎉 📣 👏 🎊</span></div><div class="tug"><div class="rope"></div><div class="mid"></div><div class="knot" id="knot"><svg viewBox="0 0 30 30" role="img" aria-label="中間旗幟" xmlns="http://www.w3.org/2000/svg"><path d="M11 4V27" stroke="#70451e" stroke-width="3" stroke-linecap="round"/><path d="M12 5 Q22 2 26 8 L24 18 Q19 14 12 17Z" fill="#e94a55" stroke="#9d2b36" stroke-width="1"/></svg></div><div class="puller redpull"><svg viewBox="0 0 136 76" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 50 H131" stroke="#ac7d45" stroke-width="5" stroke-linecap="round"/>
+<g stroke="#29415b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M39 55L26 73M39 55L51 73M94 55L81 73M94 55L106 73" fill="none"/>
+<path d="M40 32L61 46L69 48M92 32L107 47L119 47" fill="none"/>
+</g>
+<g fill="#e84f5c" stroke="#31455b" stroke-width="2">
+<rect x="27" y="28" width="24" height="30" rx="9"/><rect x="81" y="28" width="24" height="30" rx="9"/>
+</g>
+<g fill="#f4c7a3" stroke="#31455b" stroke-width="1.6">
+<circle cx="39" cy="18" r="12"/><circle cx="93" cy="18" r="12"/>
+</g><path d="M28 13 Q39 -2 50 13 M82 13 Q93 -2 104 13" stroke="#4c392f" stroke-width="6" fill="none"/>
+</svg></div><div class="puller bluepull"><svg viewBox="0 0 136 76" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 50 H131" stroke="#ac7d45" stroke-width="5" stroke-linecap="round"/>
+<g stroke="#29415b" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+<path d="M39 55L26 73M39 55L51 73M94 55L81 73M94 55L106 73" fill="none"/>
+<path d="M40 32L61 46L69 48M92 32L107 47L119 47" fill="none"/>
+</g>
+<g fill="#4787da" stroke="#31455b" stroke-width="2">
+<rect x="27" y="28" width="24" height="30" rx="9"/><rect x="81" y="28" width="24" height="30" rx="9"/>
+</g>
+<g fill="#f4c7a3" stroke="#31455b" stroke-width="1.6">
+<circle cx="39" cy="18" r="12"/><circle cx="93" cy="18" r="12"/>
+</g><path d="M28 13 Q39 -2 50 13 M82 13 Q93 -2 104 13" stroke="#4c392f" stroke-width="6" fill="none"/>
+</svg></div></div><div class="ends"><span>🔴 紅隊終點</span><span>中央線</span><span>藍隊終點 🔵</span></div></section>
 <section class="boards">
 <article class="panel board red" id="rb"><div class="head"><h2>🔴 紅隊</h2><span class="tag" id="rtag">等待開始</span></div><div class="staff" id="rstaff">按「開始」出題</div><div class="prompt" id="rprompt">看音符，選答案</div><div class="answers" id="rans"></div><div class="feedback" id="rfb" aria-live="polite"></div></article>
 <article class="panel board blue" id="bb"><div class="head"><h2>🔵 藍隊</h2><span class="tag" id="btag">等待開始</span></div><div class="staff" id="bstaff">按「開始」出題</div><div class="prompt" id="bprompt">看音符，選答案</div><div class="answers" id="bans"></div><div class="feedback" id="bfb" aria-live="polite"></div></article>
@@ -104,7 +172,7 @@ const from=i=>({letter:names[i%7],octave:Math.floor(i/7),index:i});
 const G3=di('G',3),G5=di('G',5),E4=di('E',4),F5=di('F',5);
 let running=false,red=0,blue=0,pos=0,remaining=180,gameTimer=null,qTimer=null,nextTimer=null;
 let round=0,answered=[false,false],current=[null,null],deadline=0,questionLimit=5;
-const fmt=s=>{s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return ('0'+Math.floor(s/60)).slice(-2)+':'+('0'+s%60).slice(-2)};
 function pool(){
  const d=$('difficulty').value,a=[];
  for(let i=G3;i<=G5;i++){
@@ -275,8 +343,19 @@ reset();
 
 
 const fsButton=document.getElementById('fullscreenBtn');
-if(fsButton)fsButton.addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){}});
+if(fsButton)fsButton.addEventListener('click',function(){try{var action=document.fullscreenElement?(document.exitFullscreen&&document.exitFullscreen()):(document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen());if(action&&action.catch)action.catch(function(){});}catch(e){}});
 document.addEventListener('fullscreenchange',()=>{if(fsButton)fsButton.textContent=document.fullscreenElement?'⛶ 離開全螢幕':'⛶ 全螢幕'});
 
 </script>
-</body></html>
+<style>
+#compatError{display:none;position:fixed;top:43px;left:8px;right:8px;padding:7px 12px;border:2px solid #e6a044;background:#fff8de;color:#82360c;border-radius:10px;z-index:900;font:700 13px/1.3 sans-serif;pointer-events:none;box-shadow:0 3px 8px #0003}
+</style><div id="compatError" role="alert"></div><script>
+(function(){
+ if(!Array.prototype.includes)Array.prototype.includes=function(value){return this.indexOf(value)!==-1};
+ if(window.NodeList&&!NodeList.prototype.forEach)NodeList.prototype.forEach=Array.prototype.forEach;
+ window.addEventListener('error',function(event){
+  var target=document.getElementById('compatError');
+  if(target){target.style.display='block';target.textContent='裝置瀏覽器發生相容性問題，建議使用 Chrome 開啟。錯誤：'+String(event.message||'未知錯誤').slice(0,130);}
+ });
+})();
+</script></body></html>

@@ -131,7 +131,7 @@ main{flex:1;min-height:0;width:100%;max-width:none;margin:0;padding:7px clamp(7p
  .scene{min-height:76px}.scene-tag{display:none}
  .levelhead h2{font-size:.92rem}
 }
-@media(max-height:570px){.scene{display:none}.stage{grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:'question' 'feedback' 'actions'}.headerBtn{min-height:26px}.pieces{grid-template-columns:repeat(10,minmax(0,1fr))}.piece{height:48px;flex-direction:column}.piece .music-icon{height:25px;width:100%}.piece .n,.piece .d{font-size:.54rem}}
+@media(max-height:570px){.scene{display:block}.stage{grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:'question' 'feedback' 'actions'}.headerBtn{min-height:26px}.pieces{grid-template-columns:repeat(10,minmax(0,1fr))}.piece{height:48px;flex-direction:column}.piece .music-icon{height:25px;width:100%}.piece .n,.piece .d{font-size:.54rem}}
 @media(prefers-reduced-motion:reduce){.reward-spark{animation:none}.scene.solved .traveler,.scene.solved .train,.scene.solved .orb{animation:none}}
 
 /* Whiteboard-scale notation: use the available room for larger note shapes. */
@@ -165,14 +165,51 @@ main{flex:1;min-height:0;width:100%;max-width:none;margin:0;padding:7px clamp(7p
  .question{padding:5px 8px}.measure-picker{margin-bottom:3px}
 }
 @media(max-width:870px){
- .scene{display:none}.stage{grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:'question' 'feedback' 'actions'}
+ .scene{display:block}.stage{grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:'question' 'feedback' 'actions'}
  .question{padding:4px 8px}.measure-line{min-height:36px;max-height:43px}.placed{height:36px}.placed .music-icon{height:23px}
  .pieces .piece{height:42px}.pieces .music-icon{height:100%}.qtext{margin-bottom:2px}.measure-picker{margin-bottom:2px}
 }
 
 .homeBack{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:34px}.homeBack:hover{background:#ffffff38}@media(max-width:870px){.homeBack{min-height:30px;padding:3px 7px;font-size:.76rem}}
+
+/* Whiteboard compatibility V1.1: keep the full illustrated scene on narrow / short viewports. */
+.scene{display:block!important;min-height:67px;position:relative}
+#sceneContent{position:absolute;left:0;right:0;bottom:0;top:auto;transform-origin:center bottom}
+button,.tab,.gap,.tie-gap,.piece{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.stage{grid-template-rows:133px minmax(0,1fr) auto auto;grid-template-rows:clamp(89px,16.5vh,150px) minmax(0,1fr) auto auto}
+.piece{height:75px;height:clamp(64px,11.5vh,88px)}
+@media(max-width:870px){
+ .settings{grid-template-columns:minmax(280px,2.5fr) repeat(3,minmax(60px,.65fr)) minmax(68px,.7fr) 78px;gap:4px;align-items:end}
+ .settings .tabs-wrap{grid-column:auto!important}
+ .settings .settingChecks{grid-column:auto}
+ .settings>.resetWrap{grid-column:auto}
+ .settings .label{font-size:.63rem;margin:0 0 2px;white-space:nowrap}
+ .tab{min-height:32px;height:32px;font-size:.67rem;padding:3px 1px;white-space:nowrap}
+ .tabs{gap:2px;flex-wrap:nowrap}
+ .field select{font-size:.72rem;padding:2px;min-width:0;height:32px;min-height:32px}
+ .checkline{font-size:.68rem}.settingChecks{min-height:32px}.resetWrap .btn{font-size:.68rem;padding:4px;min-height:32px;height:32px;white-space:nowrap}
+ .scene{display:block!important;height:85px;min-height:70px}
+ .scene-tag{display:block!important;top:4px;left:6px;padding:3px 7px;font-size:.65rem}
+ .stage{grid-template-rows:85px minmax(0,1fr) auto auto!important;grid-template-areas:'scene' 'question' 'feedback' 'actions'!important}
+}
+@media(max-height:570px){
+ .scene{display:block!important;min-height:61px}
+ .stage{grid-template-rows:64px minmax(0,1fr) auto auto!important;grid-template-areas:'scene' 'question' 'feedback' 'actions'!important}
+ .bar{padding:3px 6px}.levelStrip{min-height:33px;padding:2px 7px}
+ .stage{padding:4px 7px;gap:3px}
+ .feedback{min-height:23px;padding:3px 7px;font-size:.73rem}
+ .actions .btn{min-height:28px;padding:4px 6px;font-size:.76rem}
+ .pieces .piece{height:49px;min-height:49px}.piece .music-icon{height:31px}
+ .scene-tag{display:block!important;top:3px;left:5px;font-size:.6rem;padding:2px 5px}
+}
+@media(max-width:600px){
+ .settings{grid-template-columns:repeat(3,minmax(0,1fr));gap:4px}
+ .settings .tabs-wrap{grid-column:1/-1!important}
+ .settings .settingChecks,.settings>.resetWrap{grid-column:auto}
+ .scene{display:block!important;min-height:70px}
+}
 </style></head><body>
-<header><div class="header"><h1>🎼 音樂王國大冒險　<span style="font-weight:600;color:#cbe5e4;font-size:.75em">節奏闖關 V3</span></h1><div class="headerButtons"><a class="headerBtn homeBack" href="index.html">⌂ 返回首頁</a><button class="headerBtn" id="soundToggle" aria-pressed="true">🔊 音效：開</button><button class="headerBtn" id="fullscreenBtn">⛶ 全螢幕</button></div></div></header>
+<header><div class="header"><h1>🎼 音樂王國大冒險　<span style="font-weight:600;color:#cbe5e4;font-size:.75em">節奏闖關 · 白板相容版 1.1</span></h1><div class="headerButtons"><a class="headerBtn homeBack" href="index.html">⌂ 返回首頁</a><button class="headerBtn" id="soundToggle" aria-pressed="true">🔊 音效：開</button><button class="headerBtn" id="fullscreenBtn">⛶ 全螢幕</button></div></div></header>
 <main>
 <section class="bar"><div class="settings">
  <div class="tabs-wrap"><span class="label">選擇關卡</span><div class="tabs" role="tablist" aria-label="選擇關卡"><button class="tab" role="tab" data-stage="build" aria-selected="true">🌉 修復斷橋</button><button class="tab" role="tab" data-stage="bars" aria-selected="false">🚂 節奏列車</button><button class="tab" role="tab" data-stage="tie" aria-selected="false">🔗 聲音接力</button></div></div>
@@ -211,7 +248,7 @@ const ITEMS=[
 {id:'halfRest',label:'二分休止符',ticks:4,kind:'rest'},
 {id:'quarterRest',label:'四分休止符',ticks:2,kind:'rest'},
 {id:'eighthRest',label:'八分休止符',ticks:1,kind:'rest'}];
-const byId=Object.fromEntries(ITEMS.map(x=>[x.id,x]));
+const byId={};ITEMS.forEach(function(item){byId[item.id]=item});
 const colors={whole:['#e2b87a','#c28f5a'],half:['#d6a374','#b87c50'],quarter:['#deb089','#bf835e'],eighth:['#e3c16b','#be9346'],dottedHalf:['#adca9c','#75a083'],dottedQuarter:['#c9b1d9','#9980b3'],wholeRest:['#a9c4d9','#759cad'],halfRest:['#a9c4d9','#759cad'],quarterRest:['#a9c4d9','#759cad'],eighthRest:['#a9c4d9','#759cad']};
 const state={stage:'build',meter:'4/4',difficulty:'normal',players:7,dotted:true,rests:true,progress:0,student:0,locked:false,questionNo:0,
  measures:[[]],activeMeasure:0,mission:null,
@@ -279,7 +316,16 @@ function renderScene(){
   $('sceneContent').innerHTML=`<span class="cloud">☁️</span><div class="station">🚉</div><div class="tracks"></div><div class="train" style="left:${3+state.progress/Math.max(1,state.players)*67}%;--fromX:${3+Math.max(0,state.progress-1)/Math.max(1,state.players)*67}%;--toX:${3+state.progress/Math.max(1,state.players)*67}%">🚂</div><div class="milemarkers"><span>起點</span><span>節奏站</span><span>終點</span></div>`;
  }else $('sceneContent').innerHTML=`<span class="cloud">✨</span><span class="orb">🎶</span><span class="orb orb-right">🎵</span><div class="relay-rope"></div><div class="caption">找到相同音高 · 連成一個長音</div>`;
 }
-function render(){explain();progressUI();renderScene();$('nextBtn').hidden=!state.locked;$('checkBtn').disabled=state.locked;$('undoBtn').disabled=state.locked;$('clearBtn').disabled=state.locked;
+
+function fitScene(){
+ const scene=$('scene'),art=$('sceneContent');if(!scene||!art)return;
+ const height=Math.max(55,scene.clientHeight||130);
+ const factor=Math.min(1,Math.max(.22,(height-4)/253));
+ art.style.height='253px';art.style.position='absolute';art.style.left='0';art.style.right='0';art.style.bottom='0';art.style.top='auto';art.style.transformOrigin='bottom center';art.style.transform='scaleY('+factor+')';
+}
+window.addEventListener('resize',fitScene);
+
+function render(){explain();progressUI();renderScene();fitScene();$('nextBtn').hidden=!state.locked;$('checkBtn').disabled=state.locked;$('undoBtn').disabled=state.locked;$('clearBtn').disabled=state.locked;
  $('listenBtn').disabled=state.playing ||(state.stage==='build'&&state.measures.every(m=>!m.length));
  if(state.stage==='build')renderBuild();else if(state.stage==='bars')renderBars();else renderTie();}
 // ---- First game: playable bridge built directly from real note-shaped planks ----
@@ -305,7 +351,7 @@ function add(id){if(state.locked||!materials().some(x=>x.id===id))return;
  state.measures[state.activeMeasure].push(id);render();}
 function checkBuild(){const totals=state.measures.map(count),total=met().total;
  const wrong=totals.findIndex(n=>n!==total);if(wrong>=0){state.activeMeasure=wrong;render();msg(`第 ${wrong+1} 小節${totals[wrong]<total?'還差 '+duration(total-totals[wrong]):'超過 '+duration(totals[wrong]-total)}，請調整木板。`,'bad');return false;}
- const combined=state.measures.flat(),types=new Set(combined);
+ const combined=[].concat.apply([],state.measures),types=new Set(combined);
  if(state.difficulty!=='easy'&&types.size<2){msg('這關需要至少 2 種不同的材料，再換一種音符試試。','bad');return false;}
  if(state.difficulty==='hard'){
   const good=state.mission.id==='dot'?combined.some(x=>byId[x].dot):state.mission.id==='rest'?combined.some(x=>byId[x].kind==='rest'):combined.includes('eighth');
@@ -334,7 +380,7 @@ function createBars(){const barCount=state.difficulty==='easy'?2:state.difficult
  state.barRecent.push(signature);if(state.barRecent.length>5)state.barRecent.shift();
  state.barEvents=events;state.barBoundaries=boundaries;state.chosenBars=new Set();
 }
-function renderBars(){const old=$('scoreScroll')?.scrollLeft||0,amount=state.difficulty==='easy'?2:state.difficulty==='normal'?3:4;
+function renderBars(){const old=($('scoreScroll') ? $('scoreScroll').scrollLeft : 0),amount=state.difficulty==='easy'?2:state.difficulty==='normal'?3:4;
  let html=`<div class="question"><div class="question-title"><span>🚂 分成 ${amount} 個小節｜${meterHtml()}</span><span>需要放 ${amount-1} 條小節線</span></div><p class="qtext">點選音符之間的「＋」，放上小節線。點第二次可移除。</p><div class="score-scroll" id="scoreScroll"><div class="score-stream">`;
  state.barEvents.forEach((id,i)=>{
   html+=`<div class="stream-note"><div class="music-icon">${noteSVG(id)}</div>${state.difficulty==='easy'?`<span>${byId[id].label}</span>`:''}</div>`;
@@ -355,7 +401,7 @@ function createTie(){let signature='';for(let attempt=0;attempt<70;attempt++){
  const boundaries=[],ids=[];measures.forEach((m,i)=>{ids.push(...m);if(i<numberBars-1)boundaries.push(ids.length-1)});
  const validGaps=[];for(let i=0;i<ids.length-1;i++){if(byId[ids[i]].kind==='note'&&byId[ids[i+1]].kind==='note')validGaps.push(i)}
  if(!validGaps.length)continue;
- const noneChance=state.difficulty==='easy'?0:state.difficulty==='normal'?.16:.27;
+ const noneChance=state.difficulty==='easy'?0:state.difficulty==='normal' ? 0.16 : 0.27;
  let target=Math.random()<noneChance?null:pick(validGaps);
  // Prefer a mix of in-bar and across-bar examples; no fixed tie position.
  if(target!==null&&state.difficulty!=='easy'&&Math.random()<.4){const cross=validGaps.filter(i=>boundaries.includes(i));if(cross.length)target=pick(cross)}
@@ -391,7 +437,7 @@ function createTie(){let signature='';for(let attempt=0;attempt<70;attempt++){
  const ticks=state.tieAnswer===null?0:byId[events[state.tieAnswer].id].ticks+byId[events[state.tieAnswer+1].id].ticks;
  state.tieOptions=shuffle([ticks,...[1,2,3,4,5,6,8].filter(n=>n!==ticks).slice(0,3)]);
 }
-function renderTie(){const old=$('tieScroll')?.scrollLeft||0,complex=state.difficulty==='hard',none=state.tieChosen===-1;
+function renderTie(){const old=($('tieScroll') ? $('tieScroll').scrollLeft : 0),complex=state.difficulty==='hard',none=state.tieChosen===-1;
  let html=`<div class="question"><div class="question-title"><span>✨ 相同音高的聲音接力｜${meterHtml()}</span><span>${state.tieEvents.length} 個音符／休止符</span></div><p class="qtext">選出一組「相鄰、音高相同」的音符，加上連結線。如果找不到，請選「無法連結」。</p><div class="score-scroll" id="tieScroll"><div class="tie-row">`;
  state.tieEvents.forEach((ev,i)=>{
   html+=`<div class="tie-event">${staffSVG(ev)}<div class="pitch">${state.difficulty==='easy'?ev.pitch+' · ':''}${duration(byId[ev.id].ticks)}</div></div>`;
@@ -432,7 +478,7 @@ function hint(){if(state.stage==='build')msg(state.difficulty==='hard'?`💡 把
  else msg('💡 找兩個緊鄰的音符：它們的符頭必須在五線譜的相同高度。留意小節線與休止符，但別認為只有跨小節才能連結。');}
 // ---- Audio: each rhythm can be auditioned. Tie means the second note does not reattack. ----
 function playRhythm(){if(state.playing)return;if(!state.soundOn){msg("目前音效已關閉，可按右上角開啟音效。");return;}
- let events=[];if(state.stage==='build')events=state.measures.flatMap(m=>m.map(id=>({id,pitch:'G4'})));
+ let events=[];if(state.stage==='build')events=[].concat.apply([],state.measures.map(m=>m.map(id=>({id,pitch:'G4'}))));
  else if(state.stage==='bars')events=state.barEvents.map(id=>({id,pitch:'G4'}));
  else events=state.tieEvents;
  if(!events.length)return;
@@ -461,7 +507,7 @@ function playRhythm(){if(state.playing)return;if(!state.soundOn){msg("目前音�
 // Classroom extras: tiny award animation, synthesised sounds, and full-screen control.
 function soundButton(){const b=$('soundToggle');b.textContent=state.soundOn?'🔊 音效：開':'🔇 音效：關';b.setAttribute('aria-pressed',String(state.soundOn))}
 $('soundToggle').onclick=()=>{state.soundOn=!state.soundOn;soundButton()};
-$('fullscreenBtn').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){msg('此裝置可能不允許全螢幕，仍可直接操作遊戲。')}};
+$('fullscreenBtn').onclick=function(){try{const action=!document.fullscreenElement?(document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen()):(document.exitFullscreen&&document.exitFullscreen());if(action&&action.catch)action.catch(function(){msg('此裝置可能不允許全螢幕，仍可直接操作遊戲。')})}catch(e){msg('此裝置可能不允許全螢幕，仍可直接操作遊戲。')}};
 document.addEventListener('fullscreenchange',()=>{$('fullscreenBtn').textContent=document.fullscreenElement?'⛶ 離開全螢幕':'⛶ 全螢幕'});
 function playSfx(kind){if(!state.soundOn)return;try{
  const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
@@ -476,8 +522,19 @@ function celebrate(grand=false){const layer=$('reward');layer.innerHTML='';const
 
 optionsNumber();$('checkBtn').onclick=check;$('listenBtn').onclick=playRhythm;$('nextBtn').onclick=next;$('undoBtn').onclick=undo;$('clearBtn').onclick=clear;$('hintBtn').onclick=hint;$('resetAll').onclick=reset;
 $('meterSelect').onchange=e=>{state.meter=e.target.value;reset()};$('difficultySelect').onchange=e=>{state.difficulty=e.target.value;reset()};$('playersSelect').onchange=e=>{state.players=Number(e.target.value);reset()};$('dotted').onchange=e=>{state.dotted=e.target.checked;reset()};$('rests').onchange=e=>{state.rests=e.target.checked;reset()};
-document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{state.stage=b.dataset.stage;document.querySelectorAll('[data-stage]').forEach(t=>t.setAttribute('aria-selected',String(t===b)));reset()});
+document.querySelectorAll('[data-stage]').forEach(b=>{b.onclick=function(event){if(event)event.preventDefault();try{state.stage=b.getAttribute('data-stage');document.querySelectorAll('[data-stage]').forEach(t=>t.setAttribute('aria-selected',String(t===b)));reset()}catch(error){msg('切換關卡發生錯誤，請重新整理頁面：'+error.message,'bad');throw error}}});
 makeQuestion();soundButton();
 })();
 
+</script><style>
+#compatError{display:none;position:fixed;top:43px;left:8px;right:8px;padding:7px 12px;border:2px solid #e6a044;background:#fff8de;color:#82360c;border-radius:10px;z-index:900;font:700 13px/1.3 sans-serif;pointer-events:none;box-shadow:0 3px 8px #0003}
+</style><div id="compatError" role="alert"></div><script>
+(function(){
+ if(!Array.prototype.includes)Array.prototype.includes=function(value){return this.indexOf(value)!==-1};
+ if(window.NodeList&&!NodeList.prototype.forEach)NodeList.prototype.forEach=Array.prototype.forEach;
+ window.addEventListener('error',function(event){
+  var target=document.getElementById('compatError');
+  if(target){target.style.display='block';target.textContent='裝置瀏覽器發生相容性問題，建議使用 Chrome 開啟。錯誤：'+String(event.message||'未知錯誤').slice(0,130);}
+ });
+})();
 </script></body></html>
