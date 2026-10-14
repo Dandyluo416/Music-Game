@@ -1,0 +1,483 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>音樂王國大冒險｜音樂遊戲教室</title><style>
+:root{--ink:#243852;--deep:#193e58;--teal:#138b82;--line:#dce6ee;--bg:#f2f7f9;--shadow:0 10px 28px #24405a10;--hint:#667e90;--gold:#f8c666}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif;color:var(--ink)}button,select,input{font:inherit}button{cursor:pointer;touch-action:manipulation}button:focus-visible,select:focus-visible{outline:3px solid #edb33b;outline-offset:3px}button:disabled{opacity:.48;cursor:not-allowed}button[hidden],div[hidden]{display:none!important}
+header{background:linear-gradient(112deg,#173c5b,#236a78 65%,#369287);color:white;padding:20px clamp(13px,3vw,38px) 24px}header .header{max-width:1380px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}header h1{margin:5px 0 3px;font-size:clamp(1.75rem,3.2vw,2.65rem)}header p{margin:0;color:#d3f0ef;font-weight:600}.eyebrow{font-size:.78rem;font-weight:900;letter-spacing:.19em;opacity:.83}.pill{padding:9px 14px;background:#ffffff24;border:1px solid #ffffff77;border-radius:25px;font-size:.85rem;font-weight:800}
+main{max-width:1380px;padding:14px clamp(12px,2vw,26px) 28px;margin:auto}.bar,.stage,.panel{background:white;border:1px solid var(--line);box-shadow:var(--shadow);border-radius:19px}.bar{padding:14px 16px;margin-bottom:13px}.settings{display:grid;grid-template-columns:minmax(345px,1.9fr) repeat(3,minmax(120px,.7fr)) minmax(200px,1.05fr) auto;gap:12px;align-items:end}.label{font-weight:900;font-size:.83rem;color:#627a8d;margin:0 0 7px;display:block}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{background:#edf4f8;color:#30556a;border:1px solid #d9e4ed;padding:11px 12px;flex:1;white-space:nowrap;border-radius:11px;font-weight:900;min-height:48px}.tab[aria-selected="true"]{background:#1d637c;color:white;border-color:#1d637c}.field select{width:100%;border:1px solid #ccdae6;padding:10px 9px;background:white;border-radius:11px;min-height:48px;font-weight:800;color:#203b55}.checkline{display:flex;gap:8px;align-items:center;margin-bottom:2px;white-space:nowrap;font-size:.86rem;font-weight:800}.checkline input{width:18px;height:18px;accent-color:#2c9388}.btn{border:0;border-radius:11px;padding:11px 17px;font-weight:900;min-height:47px}.btn.primary{background:#158779;color:white}.btn.soft{background:#e8f0f6;color:#295572}.btn.gold{background:#f5c35d;color:#51401d}.btn.outline{background:white;border:2px solid #b8d1de;color:#315c72}.btn:hover:not(:disabled){filter:brightness(.965)}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 290px;gap:13px}.stage{padding:16px;min-width:0}.sidebar{display:flex;flex-direction:column;gap:13px}.panel{padding:16px}h2{font-size:1.45rem;margin:0 0 8px}h3{font-size:1.1rem;margin:0 0 10px}.sub{font-size:.94rem;color:#627a8a;line-height:1.65;margin:0 0 12px}.levelhead{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:7px}.metric{display:inline-flex;padding:8px 11px;border-radius:11px;background:#eaf7f5;font-size:.86rem;color:#19756d;font-weight:900}.scene{height:253px;border-radius:17px;margin-bottom:14px;position:relative;overflow:hidden;border:2px solid #bee0df}.scene-tag{position:absolute;top:12px;left:14px;z-index:7;background:#ffffffe6;border-radius:20px;padding:7px 13px;color:#2b6572;font-size:.85rem;font-weight:900}.scene-bridge{background:linear-gradient(#b4e3f4 0 62%,#8ad2ae 62% 100%)}.scene-bridge .sun{position:absolute;top:25px;right:12%;width:55px;height:55px;border-radius:50%;background:#ffe59b;box-shadow:0 0 38px #ffe199}.mountains{position:absolute;inset:25% 0 22%;background:linear-gradient(95deg,#77c3b2,#60a89d);clip-path:polygon(0 100%,0 54%,14% 17%,26% 68%,42% 15%,58% 74%,72% 17%,86% 61%,95% 20%,100% 52%,100% 100%)}.river{position:absolute;bottom:0;left:0;right:0;height:98px;background:repeating-linear-gradient(175deg,#45a5cb 0 14px,#65c9e9 14px 30px,#3b93c2 30px 45px);animation:river 2.3s linear infinite}.shore{position:absolute;bottom:0;width:9%;height:104px;background:#8ecb83}.shore.left{left:0;border-radius:0 25px 0 0}.shore.right{right:0;border-radius:25px 0 0}.castle{position:absolute;right:1%;bottom:101px;font-size:38px}.traveler{position:absolute;bottom:112px;left:3%;font-size:41px;z-index:5;transition:left .75s ease;filter:drop-shadow(0 4px 2px #0002)}.bridge-rail{position:absolute;left:8%;right:8%;bottom:102px;height:9px;background:repeating-linear-gradient(90deg,#b68b53 0 20px,#d9aa69 20px 30px);z-index:1;opacity:.55}.bridge-live{position:absolute;left:8%;right:8%;bottom:90px;height:78px;display:flex;align-items:flex-end;z-index:3;overflow:visible;gap:2px}.bridge-live .wood{min-width:0;flex-shrink:0;height:61px;border:2px solid #77502f;border-radius:6px 6px 2px 2px;background:linear-gradient(160deg,var(--wood1,#c8955f),var(--wood2,#a86f40));position:relative;display:flex;align-items:center;justify-content:center;box-shadow:0 7px 0 #6c452a,0 10px 9px #223c5040;animation:plankIn .18s ease-out both}.bridge-live .wood:before,.bridge-live .wood:after{content:"";position:absolute;width:4px;height:4px;background:#6e5948;border-radius:50%;top:6px}.bridge-live .wood:before{left:5px}.bridge-live .wood:after{right:5px}.bridge-live .wood .music-icon{height:57px;width:95%;max-width:95px;overflow:hidden;filter:drop-shadow(0 1px 0 #ffe0b3)}.bridge-live .wood svg{height:100%;width:100%}.bridge-live .unfinished{height:61px;border:2px dashed #ffffffdd;background:#ffffff40;border-radius:5px;min-width:0;align-self:flex-end;display:grid;place-items:center;color:#fff;font-size:1.4rem;font-weight:900}.bridge-bottom-note{position:absolute;bottom:8px;left:15%;right:15%;text-align:center;color:#f9fdff;font-size:.85rem;font-weight:800;text-shadow:0 2px 2px #164b6a}
+.scene-train{background:linear-gradient(#d3e9fc 0 70%,#badac0 70%)}.scene-train:before{content:"";position:absolute;inset:23% 0 30%;background:linear-gradient(160deg,#89b6db,#7aabc1);clip-path:polygon(0 100%,0 70%,18% 22%,32% 75%,55% 10%,71% 76%,85% 20%,100% 62%,100% 100%)}.scene-train .station{position:absolute;bottom:73px;right:7%;font-size:4rem;z-index:3}.tracks{position:absolute;bottom:54px;left:3%;right:3%;height:12px;background:#554e48;border-top:4px solid #ddd4bb;border-bottom:4px solid #ddd4bb}.tracks:after{content:"";position:absolute;left:0;right:0;top:-16px;height:39px;background:repeating-linear-gradient(90deg,transparent 0 25px,#8a6949 25px 33px,transparent 33px 48px);z-index:0;pointer-events:none}.train{position:absolute;bottom:66px;left:5%;font-size:3.7rem;transition:left 1s ease;z-index:4;filter:drop-shadow(0 5px 3px #0003)}.scene-train .cloud,.scene-tie .cloud{position:absolute;top:40px;right:24%;font-size:2.5rem;opacity:.8}.scene-train .milemarkers{position:absolute;bottom:7px;left:8%;right:8%;display:flex;justify-content:space-around;font-size:.83rem;font-weight:900;color:#305d70}
+.scene-tie{background:radial-gradient(circle at 80% 20%,#d5f1fa,transparent 40%),linear-gradient(#f0ecff 0 65%,#d3dced 65%)}.scene-tie:before{content:"";position:absolute;left:-3%;right:-3%;bottom:15%;height:65px;background:#b4c6e5;clip-path:polygon(0 100%,0 65%,10% 30%,20% 70%,35% 20%,53% 75%,71% 27%,83% 65%,100% 22%,100% 100%)}.scene-tie .orb{position:absolute;top:27%;left:12%;font-size:3.4rem;filter:drop-shadow(0 5px 9px #88ace0)}.scene-tie .orb-right{left:auto;right:12%}.relay-rope{position:absolute;top:48%;left:25%;right:25%;height:9px;background:repeating-linear-gradient(90deg,#8b91c4 0 14px,#d3d1ff 14px 25px);border-radius:10px;box-shadow:0 3px 8px #6d6fae55}.relay-rope:after{content:"✦";position:absolute;top:-25px;left:50%;font-size:32px;color:#856ec4}.scene-tie.solved .relay-rope{background:linear-gradient(90deg,#e4af56,#fff2a7,#f5bf4d);box-shadow:0 0 24px #ffc553}.scene-tie .caption{text-align:center;position:absolute;bottom:16px;left:0;right:0;font-weight:900;color:#5267a6}
+.question{background:#f9fcfd;border:2px solid #d9e6ee;border-radius:16px;padding:13px;margin-bottom:13px}.question-title{display:flex;justify-content:space-between;gap:9px;align-items:center;flex-wrap:wrap;font-size:.85rem;font-weight:900;color:#55728a;margin-bottom:10px}.qtext{font-size:1rem;font-weight:850;margin:0 0 12px}.meter{display:inline-flex;flex-direction:column;line-height:1;vertical-align:middle;font-size:1rem}.meter span{text-align:center}
+.measure-picker{display:flex;gap:7px;margin-bottom:11px;flex-wrap:wrap}.measure-btn{background:#edf3f7;border:2px solid #d4e3ed;border-radius:9px;padding:8px 12px;font-weight:900;color:#365972}.measure-btn.current{background:#d6f3e8;border-color:#27917a;color:#146654}.mini-piece{display:inline-flex;align-items:center;margin-left:6px;font-size:.78rem;color:#697a8d}.mini-piece strong{color:#285b67}
+.measure-line{display:flex;align-items:center;gap:5px;min-height:82px;padding:9px 8px;border:1px solid #bdd0dd;background:white;border-radius:11px;overflow-x:auto}.placed{position:relative;min-width:71px;border-radius:9px;background:#f7efe3;border:1px solid #dfbe8d;display:flex;flex-direction:column;align-items:center;padding:4px 6px;color:#75502e;font-size:.69rem;font-weight:900}.placed .music-icon{height:48px;width:67px}.placed svg{height:100%;width:100%}.placed .remove{position:absolute;right:-8px;top:-7px;background:#fff;border:1px solid #dca5a5;color:#b23f3f;border-radius:40px;width:24px;height:24px;padding:0;font-weight:900}.empty{font-size:.86rem;color:#9aabb6;padding:12px}.beat-track{margin:11px 0 2px;display:flex;height:17px;background:#dce6ed;border-radius:7px;overflow:hidden;gap:2px}.beat-track .bit{min-width:0;flex:1;background:#d8e5eb}.beat-track .bit.fill{background:#49a89d}.beat-track .bit.over{background:#dc7a6d}.beat-track .bit.group{border-left:3px solid #fff}.pieces{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.piece{background:linear-gradient(158deg,#fff,#f6fafb);border:2px solid #cfe0e9;min-height:106px;padding:5px 3px;border-radius:12px;color:#2e4e66;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;transition:transform .1s,border-color .1s}.piece:hover:not(:disabled){transform:translateY(-2px);border-color:#208f84}.piece .music-icon{width:93px;max-width:100%;height:55px}.piece svg{height:100%;width:100%}.piece .n{font-weight:900;font-size:.78rem}.piece .d{font-size:.76rem;color:#698198}.pale{font-size:.84rem;color:#677e91;line-height:1.65}.accent{color:#167e75;font-weight:900}.actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:12px}.feedback{padding:11px 14px;background:#eaf3fa;border-radius:12px;color:#305e7a;min-height:45px;font-weight:800;line-height:1.5}.feedback.good{background:#e0f7e8;color:#167349}.feedback.bad{background:#fff0ec;color:#ab4d42}.sideprogress{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.student{background:#f0f5f8;border:2px solid #e1e9f0;border-radius:10px;text-align:center;padding:10px 0;font-weight:900;font-size:.87rem}.student.current{background:#ffedc4;border-color:#e3b34a;color:#8e641c}.student.done{background:#ddf3e6;border-color:#b2d9bf}.progressrow{display:flex;justify-content:space-between;font-weight:900;color:#577184;font-size:.89rem;gap:8px;flex-wrap:wrap;margin:12px 0}.sidehint{font-size:.85rem;line-height:1.7;color:#697e8f;margin:9px 0 0}.guide{padding-left:19px;margin:5px 0 0;color:#576f82;font-size:.86rem;line-height:1.7}.guide li{margin:6px 0}.footer{text-align:center;font-size:.82rem;color:#8194a4;margin-top:15px}
+.score-scroll{overflow:auto;width:100%;border:1px solid #dae5ef;background:white;border-radius:12px;padding:15px 10px}.score-stream{display:flex;align-items:center;gap:4px;width:max-content;min-width:100%;justify-content:center}.stream-note{display:flex;flex-direction:column;align-items:center;min-width:60px;font-size:.7rem;font-weight:800;color:#698195}.stream-note .music-icon{width:67px;height:72px}.stream-note svg{width:100%;height:100%}.gap{height:88px;width:29px;min-width:29px;border:2px dashed #c4d9e7;background:#f5fafd;color:#95a9b7;border-radius:7px;font-weight:900;font-size:1.5rem;padding:0}.gap.on{background:#d8f2e8;border:2px solid #2a927d;color:#1b7868}.gap.correctgap{box-shadow:0 0 0 3px #f7c558}.score-sub{font-size:.83rem;color:#668093;margin-top:10px}.hidden-barline{font-size:1.8rem;font-weight:900;color:#416d81}.train-progress{height:16px;border-radius:8px;background:#e4eef2;margin:12px 0;overflow:hidden}.train-progress .fill{height:100%;background:linear-gradient(90deg,#66bcb0,#2f9186);transition:width .6s}
+.tie-row{display:flex;align-items:center;gap:2px;min-width:max-content}.tie-event{display:flex;flex-direction:column;align-items:center;min-width:70px;position:relative}.tie-event svg{height:105px;width:76px}.tie-event .pitch{font-size:.71rem;color:#6c8593;font-weight:900;margin-top:2px}.tie-gap{background:#f0f6fb;border:2px dashed #afcddd;border-radius:9px;color:#648a9a;font-size:1.35rem;width:34px;height:85px;min-width:34px;padding:1px;position:relative;z-index:2}.tie-gap.on{border:2px solid #318f87;color:#17746a;background:#dcf7ec}.bar-sep{width:4px;height:104px;background:#3a6580;border-radius:5px;flex-shrink:0;opacity:.8}.tie-choice{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.tie-choice .btn.picked{background:#c6ebe2;border:2px solid #278c79}.tie-choice .btn{min-height:41px;padding:8px 13px}.answerchoice{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px}.answerchoice button{background:#edf3fa;border:2px solid #d0e0ed;border-radius:10px;min-width:64px;min-height:42px;font-weight:900;color:#345f79}.answerchoice button.chosen{border-color:#188a7d;background:#daf2eb;color:#117267}.extra{padding:10px 12px;background:#eaf5f1;border-radius:11px;margin-top:9px;font-size:.87rem;line-height:1.5}.tag{font-size:.82rem;font-weight:900;border-radius:20px;padding:5px 10px;background:#eff5fa;color:#477088}
+@keyframes river{from{background-position:0 0}to{background-position:0 45px}}@keyframes plankIn{from{transform:translateY(-26px);opacity:.2}to{transform:translateY(0);opacity:1}}@media(max-width:1120px){.settings{grid-template-columns:1.5fr 1fr 1fr 1fr;}.settingChecks{grid-column:1/3}.settings>.resetWrap{grid-column:4}.layout{grid-template-columns:minmax(0,1fr) 245px}}@media(max-width:840px){.layout{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:1fr 1fr}.settings{grid-template-columns:1fr 1fr 1fr}.tabs-wrap{grid-column:1/-1}.settingChecks{grid-column:auto}.settings>.resetWrap{grid-column:auto}}@media(max-width:580px){.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.tabs-wrap{grid-column:1/-1}.settingChecks{grid-column:1/-1}.sidebar{grid-template-columns:1fr}.pieces{grid-template-columns:repeat(3,minmax(0,1fr))}.scene{height:215px}.bridge-live{left:7%;right:7%}.levelhead h2{font-size:1.28rem}.stage,.panel{padding:11px}main{padding:10px}.piece{min-height:96px}.topbar h1{font-size:1.7rem}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+
+/* V3 classroom single-screen redesign — no document or question-area scrolling */
+:root{--ink:#23374b;--deep:#193e58;--teal:#087e78;--line:#cddfe7;--bg:#eff6f5;--shadow:0 3px 12px #24405a0d}
+html,body{width:100%;height:100%;height:100dvh;margin:0;overflow:hidden}
+body{display:flex;flex-direction:column;background:linear-gradient(145deg,#eaf5f4 0,#f3f7fa 65%,#eef3fb 100%)}
+header{flex:0 0 auto;padding:5px clamp(8px,1.2vw,18px);background:linear-gradient(100deg,#1b3c59,#126a71);box-shadow:0 2px 10px #18384d20}
+header .header{max-width:none;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:nowrap}
+header h1{font-size:clamp(1.04rem,1.75vw,1.5rem);line-height:1.15;margin:0;font-weight:950;white-space:nowrap}
+header p,header .eyebrow,header .pill{display:none}
+.headerButtons{display:flex;gap:7px;align-items:center}
+.headerBtn{font-size:.81rem;font-weight:900;min-height:34px;padding:6px 11px;border-radius:9px;border:1px solid #a8dfd9;background:#ffffff22;color:white;white-space:nowrap}
+.headerBtn:hover{background:#ffffff38}
+main{flex:1;min-height:0;width:100%;max-width:none;margin:0;padding:7px clamp(7px,1vw,14px);display:flex;flex-direction:column;gap:6px}
+.bar{flex:0 0 auto;margin:0;padding:6px 9px;border-radius:13px;box-shadow:var(--shadow)}
+.settings{display:grid;grid-template-columns:minmax(315px,2.8fr) repeat(3,minmax(95px,.75fr)) minmax(125px,.8fr) auto;align-items:end;gap:8px}
+.label{font-size:.7rem;line-height:1.1;margin:0 0 3px;color:#5c7486}
+.tab{padding:4px 6px;min-height:37px;flex:1;font-size:clamp(.74rem,.9vw,.9rem);border-radius:9px}
+.tabs{gap:5px;flex-wrap:nowrap}.field select{height:37px;min-height:37px;padding:4px 5px;font-size:.9rem;border-radius:9px}
+.settingChecks{display:flex;flex-direction:column;gap:2px;justify-content:end;min-height:37px}.settingChecks>.label{display:none}
+.checkline{font-size:.76rem;margin:0;line-height:1.05;gap:4px}.checkline input{width:15px;height:15px}
+.resetWrap{display:flex;align-items:end}.resetWrap>.label{display:none}.resetWrap .btn{min-height:37px;padding:6px 10px;white-space:nowrap;font-size:.79rem}
+.levelStrip{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:45px;border:1px solid #dce7ed;background:#fff;border-radius:12px;padding:4px 12px;box-shadow:var(--shadow)}
+.levelhead{display:flex;align-items:center;gap:8px;min-width:0;margin:0;flex:0 1 auto;justify-content:start;flex-wrap:nowrap}
+.levelhead h2{font-size:clamp(.98rem,1.3vw,1.2rem);margin:0;white-space:nowrap;line-height:1.15}
+.metric{padding:4px 8px;font-size:.75rem;white-space:nowrap}
+.partyCompact{display:flex;align-items:center;justify-content:flex-end;gap:7px;min-width:0;flex:1}
+.partyCompact h3{font-size:.8rem;white-space:nowrap;margin:0;color:#3e6379}
+.sideprogress{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:nowrap;min-width:0}
+.student{padding:3px 6px;min-width:32px;border-radius:7px;font-size:.72rem;border-width:1px;white-space:nowrap}
+.progressrow{margin:0;gap:8px;white-space:nowrap;font-size:.76rem}.progressrow span{display:inline-block}
+.layout{flex:1;min-height:0;display:block}
+.stage{height:100%;min-height:0;min-width:0;display:grid;grid-template-columns:1fr;grid-template-rows:clamp(89px,16.5vh,150px) minmax(0,1fr) auto auto;grid-template-areas:'scene' 'question' 'feedback' 'actions';gap:5px;overflow:hidden;padding:7px 9px;border-radius:14px}
+.scene{grid-area:scene;height:100%;min-height:0;margin:0;border-radius:12px}
+#questionArea{grid-area:question;min-height:0;min-width:0;overflow:hidden;display:flex;flex-direction:column;gap:4px}
+#questionArea>.question{margin:0;min-height:0;flex:0 1 auto;overflow:hidden}
+#questionArea>h3{margin:0;font-size:.79rem;line-height:1.1;color:#365d70}
+.feedback{grid-area:feedback;min-height:30px;padding:5px 10px;border-radius:9px;line-height:1.25;font-size:.79rem;display:flex;align-items:center}
+.actions{grid-area:actions;margin:0;gap:6px;flex-wrap:nowrap;min-width:0}
+.actions .btn{min-height:37px;padding:6px clamp(6px,1.2vw,16px);white-space:nowrap;font-size:clamp(.79rem,.95vw,.93rem)}
+.actions #checkBtn{min-width:116px}
+.actions #nextBtn{margin-left:auto}
+#stageIntro,#stageTip{display:none}
+.question{padding:7px 11px;border-width:1px;border-radius:11px}
+.question-title{margin-bottom:3px;font-size:.76rem;line-height:1.2;gap:5px;flex-wrap:nowrap}
+.qtext{margin:0 0 5px;font-size:.83rem;line-height:1.3}
+.measure-picker{gap:6px;margin-bottom:5px}.measure-btn{padding:4px 9px;font-size:.76rem}.mini-piece{font-size:.73rem}
+.measure-line{min-height:48px;max-height:58px;padding:5px 8px;overflow:hidden;gap:4px;flex-wrap:wrap;align-content:center}
+.placed{min-width:43px;height:47px;padding:1px 3px;font-size:.59rem;gap:0}
+.placed .music-icon{height:31px;width:40px}.placed .remove{width:17px;height:17px;right:-4px;top:-4px;line-height:13px;font-size:14px}
+.empty{padding:4px;font-size:.77rem}
+.beat-track{height:9px;margin:5px 0 0;gap:1px}
+.score-sub{font-size:.72rem;margin-top:4px;line-height:1.2}
+.pieces{grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;flex:0 0 auto}
+.piece{height:clamp(64px,11.5vh,88px);min-height:0;padding:2px 1px;border-radius:9px;gap:0}
+.piece .music-icon{height:clamp(33px,6.3vh,51px);width:100%}
+.piece .n{font-size:clamp(.57rem,.8vw,.76rem);line-height:1.1;white-space:nowrap}.piece .d{font-size:clamp(.57rem,.78vw,.75rem);line-height:1.1}
+.score-scroll{width:100%;overflow:visible;padding:4px 6px;max-height:none;border-radius:9px}
+.score-stream{min-width:0;width:100%;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:2px 0}
+.stream-note{width:clamp(30px,3.65vw,51px);min-width:0;font-size:.59rem;line-height:1.1}
+.stream-note .music-icon{width:100%;height:clamp(36px,6.2vh,52px)}
+.gap{min-width:19px;width:19px;height:clamp(38px,6.4vh,55px);padding:0;font-size:1rem;border-radius:5px;border-width:1px}
+.train-progress{height:8px;margin:5px 0 0}
+.tie-row{min-width:0;width:100%;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:1px 0}
+.tie-event{min-width:0;width:clamp(37px,4.65vw,65px)}
+.tie-event svg{height:clamp(47px,8.7vh,74px);width:100%}
+.tie-event .pitch{font-size:.58rem;margin:0;white-space:nowrap;line-height:1.13}
+.tie-gap{min-width:20px;width:20px;height:clamp(42px,7.7vh,66px);font-size:1rem;border-width:1px;border-radius:6px;padding:0}
+.bar-sep{height:clamp(43px,8vh,70px);width:3px;margin:0 1px}
+.tie-choice{margin:5px 0;gap:5px}.tie-choice .btn{padding:5px 9px;min-height:31px;font-size:.76rem}.tag{font-size:.72rem;padding:4px 7px}
+.extra{padding:5px 8px;margin-top:5px;font-size:.77rem;border-radius:8px;line-height:1.2}
+.answerchoice{margin-top:4px;gap:5px}.answerchoice button{min-width:60px;min-height:30px;padding:3px 8px;font-size:.77rem}
+/* Compress character scenes while preserving landmarks and motions. */
+.scene-tag{top:6px;left:8px;padding:4px 8px;font-size:.73rem;z-index:8}
+.scene-bridge .sun{top:9px;width:35px;height:35px}.mountains{inset:10% 0 30%}
+.river{height:52%;background-size:auto auto}.shore{height:58%}.castle{bottom:56%;font-size:clamp(21px,3vw,35px)}
+.traveler{bottom:58%;font-size:clamp(21px,3.1vw,34px)}
+.bridge-rail{bottom:47%;height:6px}.bridge-live{bottom:43%;height:47%;gap:1px;align-items:flex-end}
+.bridge-live .wood,.bridge-live .unfinished{height:66%;border-radius:4px}
+.bridge-live .wood{box-shadow:0 3px 0 #6c452a,0 4px 7px #223c5040}
+.bridge-live .wood .music-icon{height:100%;width:96%}.bridge-bottom-note{bottom:4px;font-size:.72rem}
+.scene-train .station{bottom:47%;font-size:clamp(25px,4vw,43px)}.tracks{bottom:26%;height:9px}
+.train{bottom:34%;font-size:clamp(29px,4.4vw,46px)}.scene-train .milemarkers{bottom:4px;font-size:.7rem}
+.scene-train .cloud,.scene-tie .cloud{top:12px;font-size:1.6rem}
+.scene-tie .orb{font-size:clamp(27px,4vw,47px);top:30%}.relay-rope{top:55%;height:7px}.scene-tie .caption{bottom:6px;font-size:.8rem}
+/* feedback and tiny celebratory effects */
+#reward{position:fixed;inset:0;pointer-events:none;z-index:100;overflow:hidden}
+.reward-spark{position:absolute;font-size:clamp(22px,3vw,46px);animation:sparkFlight .95s ease-out both;text-shadow:0 3px 4px #0002}
+@keyframes sparkFlight{0%{transform:translate(-50%,10px) scale(.5);opacity:0}25%{opacity:1}100%{transform:translate(calc(-50% + var(--dx)),var(--dy)) scale(1.18) rotate(var(--rotation));opacity:0}}
+.scene.solved .traveler{animation:heroHop .8s ease-out both}
+.scene.solved .train{animation:trainGo 1.05s ease-in-out both}
+.scene.solved .orb{animation:orbPulse .7s ease-out both}
+@keyframes heroHop{0%{left:var(--fromX);transform:translateY(0)}45%{transform:translateY(-19px)}100%{left:var(--toX);transform:translateY(0)}}
+@keyframes trainGo{0%{left:var(--fromX)}100%{left:var(--toX)}}
+@keyframes orbPulse{40%{transform:scale(1.4);filter:drop-shadow(0 0 19px #f4ca77)}}
+@media(max-height:760px){
+ header{padding:4px 10px}.headerBtn{min-height:30px}.bar{padding:4px 7px}.tab{min-height:32px}.field select{height:32px;min-height:32px}.resetWrap .btn{min-height:32px}
+ .levelStrip{min-height:38px;padding:3px 9px}.stage{grid-template-rows:clamp(83px,14vh,108px) minmax(0,1fr) auto auto;padding:5px 7px;gap:4px}
+ .piece{height:clamp(56px,10vh,70px)}.piece .music-icon{height:clamp(30px,5.2vh,40px)}
+ .question{padding:5px 9px}.qtext{margin:0 0 3px}
+ .scene-tag{font-size:.68rem}.feedback{min-height:27px;padding:4px 8px}.actions .btn{min-height:34px}
+ .stream-note .music-icon{height:39px}.gap{height:40px}.tie-event svg{height:55px}.tie-gap{height:47px}.bar-sep{height:49px}
+}
+@media(max-width:1160px){
+ .settings{grid-template-columns:minmax(290px,2.5fr) repeat(3,minmax(80px,.72fr)) minmax(120px,.8fr) auto;gap:5px}
+ .levelStrip{gap:7px}.student{min-width:27px;padding:3px 4px;font-size:.64rem}.metric{font-size:.69rem}
+ .pieces{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.piece{height:clamp(48px,6.9vh,65px);flex-direction:row;gap:2px}
+ .piece .music-icon{width:44%;height:100%}.piece .n,.piece .d{white-space:normal}
+ .piece{position:relative}.piece .n{font-size:.64rem}.piece .d{font-size:.6rem}
+}
+@media(max-width:870px){
+ header h1{font-size:1rem}.tabs-wrap{grid-column:1 / -1}.settings{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.tab{font-size:.74rem}
+ .bar{padding:4px}.field select{font-size:.75rem}.settingChecks{min-width:0}.resetWrap .btn{font-size:.7rem;padding:3px}
+ .levelStrip{flex-wrap:wrap;min-height:54px}.partyCompact{width:100%;justify-content:space-between}
+ .scene{min-height:76px}.scene-tag{display:none}
+ .levelhead h2{font-size:.92rem}
+}
+@media(max-height:570px){.scene{display:none}.stage{grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:'question' 'feedback' 'actions'}.headerBtn{min-height:26px}.pieces{grid-template-columns:repeat(10,minmax(0,1fr))}.piece{height:48px;flex-direction:column}.piece .music-icon{height:25px;width:100%}.piece .n,.piece .d{font-size:.54rem}}
+@media(prefers-reduced-motion:reduce){.reward-spark{animation:none}.scene.solved .traveler,.scene.solved .train,.scene.solved .orb{animation:none}}
+
+/* Whiteboard-scale notation: use the available room for larger note shapes. */
+@media(min-width:1200px){
+ .piece{height:clamp(82px,13.5vh,115px)}
+ .piece .music-icon{height:clamp(48px,8vh,69px)}
+ .piece .n{font-size:clamp(.67rem,.9vw,.87rem)}.piece .d{font-size:clamp(.67rem,.85vw,.8rem)}
+ .stream-note{width:clamp(41px,4.4vw,67px)}.stream-note .music-icon{height:clamp(48px,8.5vh,77px)}
+ .gap{height:clamp(49px,9vh,82px);width:23px;min-width:23px}
+ .tie-event{width:clamp(50px,4.8vw,74px)}.tie-event svg{height:clamp(66px,11vh,100px)}
+ .tie-event .pitch{font-size:.69rem}.tie-gap{width:23px;min-width:23px;height:clamp(62px,10vh,89px)}
+ .bar-sep{height:clamp(65px,10.5vh,96px)}
+}
+@media(min-width:1200px) and (min-height:950px){
+ .stage{grid-template-rows:clamp(170px,22vh,245px) minmax(0,1fr) auto auto}
+ .question{padding:10px 15px}.qtext{font-size:1.08rem}
+ .feedback{min-height:44px;font-size:1rem}.actions .btn{min-height:46px;font-size:1rem}
+ .piece{height:132px}.piece .music-icon{height:82px}
+ .scene-tag{font-size:.9rem}.bridge-bottom-note{font-size:.9rem}
+}
+@media(min-width:1200px) and (max-height:800px){
+ .piece{height:clamp(82px,12vh,97px)}.piece .music-icon{height:clamp(48px,7vh,62px)}
+ .stream-note .music-icon{height:clamp(48px,7.7vh,64px)}.gap{height:clamp(49px,8vh,69px)}
+ .tie-event svg{height:clamp(66px,9.8vh,78px)}.tie-gap{height:clamp(62px,9.5vh,75px)}.bar-sep{height:clamp(65px,10vh,83px)}
+}
+@media(min-width:1200px) and (min-height:740px) and (max-height:900px){
+ .stage{grid-template-rows:clamp(128px,18vh,165px) minmax(0,1fr) auto auto}
+}
+@media(min-width:871px) and (max-width:1160px){
+ .measure-line{min-height:40px;max-height:48px}.placed{height:40px}.placed .music-icon{height:27px}
+ .question{padding:5px 8px}.measure-picker{margin-bottom:3px}
+}
+@media(max-width:870px){
+ .scene{display:none}.stage{grid-template-rows:minmax(0,1fr) auto auto;grid-template-areas:'question' 'feedback' 'actions'}
+ .question{padding:4px 8px}.measure-line{min-height:36px;max-height:43px}.placed{height:36px}.placed .music-icon{height:23px}
+ .pieces .piece{height:42px}.pieces .music-icon{height:100%}.qtext{margin-bottom:2px}.measure-picker{margin-bottom:2px}
+}
+
+.homeBack{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;min-height:34px}.homeBack:hover{background:#ffffff38}@media(max-width:870px){.homeBack{min-height:30px;padding:3px 7px;font-size:.76rem}}
+</style></head><body>
+<header><div class="header"><h1>🎼 音樂王國大冒險　<span style="font-weight:600;color:#cbe5e4;font-size:.75em">節奏闖關 V3</span></h1><div class="headerButtons"><a class="headerBtn homeBack" href="index.html">⌂ 返回首頁</a><button class="headerBtn" id="soundToggle" aria-pressed="true">🔊 音效：開</button><button class="headerBtn" id="fullscreenBtn">⛶ 全螢幕</button></div></div></header>
+<main>
+<section class="bar"><div class="settings">
+ <div class="tabs-wrap"><span class="label">選擇關卡</span><div class="tabs" role="tablist" aria-label="選擇關卡"><button class="tab" role="tab" data-stage="build" aria-selected="true">🌉 修復斷橋</button><button class="tab" role="tab" data-stage="bars" aria-selected="false">🚂 節奏列車</button><button class="tab" role="tab" data-stage="tie" aria-selected="false">🔗 聲音接力</button></div></div>
+ <div class="field"><label class="label" for="meterSelect">拍號</label><select id="meterSelect"><option value="2/4">2/4</option><option value="3/4">3/4</option><option value="4/4" selected>4/4</option><option value="6/8">6/8（3＋3）</option></select></div>
+ <div class="field"><label class="label" for="difficultySelect">難度</label><select id="difficultySelect"><option value="easy">簡單</option><option value="normal" selected>普通</option><option value="hard">困難</option></select></div>
+ <div class="field"><label class="label" for="playersSelect">人數</label><select id="playersSelect"></select></div>
+ <div class="settingChecks"><label class="checkline"><input id="dotted" type="checkbox" checked> 附點音符</label><label class="checkline"><input id="rests" type="checkbox" checked> 休止符</label></div>
+ <div class="resetWrap"><button class="btn soft" id="resetAll">↻ 本關重來</button></div>
+</div></section>
+<section class="levelStrip"><div class="levelhead"><h2 id="stageTitle">第一關｜修復斷橋</h2><span class="metric" id="stageMetric">4/4｜普通</span></div><div class="partyCompact"><h3 id="partyTitle">🎒 7 位探險家</h3><div class="sideprogress" id="students"></div><div class="progressrow"><span>輪到 <strong id="studentNow">1 號</strong></span><span>⭐ <strong id="clearCount">0 / 7</strong></span></div></div></section>
+<div class="layout"><section class="stage">
+ <div class="scene scene-bridge" id="scene"><div class="scene-tag" id="sceneTag">修復斷橋</div><div id="sceneContent"></div></div>
+ <div id="questionArea"></div>
+ <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
+ <div class="actions"><button id="checkBtn" class="btn primary">✓ 檢查答案</button><button id="listenBtn" class="btn soft">▶ 聽節奏</button><button id="undoBtn" class="btn soft">↶ 復原</button><button id="clearBtn" class="btn soft">清空</button><button id="hintBtn" class="btn outline">💡 提示</button><button id="nextBtn" class="btn gold" hidden>下一位 →</button></div>
+</section></div>
+</main>
+<div id="reward" aria-hidden="true"></div>
+<div hidden><div id="stageIntro"></div><div id="stageTip"></div><ul id="teacherNotes"></ul><p id="teacherTip"></p></div>
+<script>
+const VECTOR_PATHS={"treble": {"path": "M314 801Q300 854 291.0 906.0Q282 958 282 1012Q282 1059 288.5 1100.5Q295 1142 307 1177Q320 1217 341.0 1252.5Q362 1288 385.5 1311.0Q409 1334 427 1334Q451 1334 493 1249Q514 1206 524.0 1156.0Q534 1106 534 1049Q534 978 515.0 907.5Q496 837 459.5 775.0Q423 713 372 666L407 498Q422 500 432.0 501.0Q442 502 447 502Q508 502 556.0 467.5Q604 433 632.5 377.0Q661 321 661 254Q661 177 621.5 115.5Q582 54 503 25Q508 8 532 -117Q538 -147 541.0 -164.5Q544 -182 545.0 -195.0Q546 -208 546 -225Q546 -275 521.5 -314.5Q497 -354 455.5 -376.0Q414 -398 363 -398Q311 -398 271.0 -378.5Q231 -359 208.0 -324.5Q185 -290 185 -245Q185 -197 211.5 -165.0Q238 -133 287 -133Q329 -133 355.5 -163.5Q382 -194 382 -236Q382 -272 357.0 -299.0Q332 -326 292 -326H282Q308 -365 364 -365Q433 -365 472.0 -320.0Q511 -275 511 -205Q511 -188 507.0 -159.5Q503 -131 493 -91Q483 -51 477.5 -25.0Q472 1 470 12Q436 2 390 2Q304 2 222 52Q142 102 96.0 184.0Q50 266 50 361Q50 451 91 530Q132 609 192.5 675.0Q253 741 314 801ZM341 826Q364 838 390.0 870.5Q416 903 440.0 945.0Q464 987 479.0 1029.5Q494 1072 494 1106Q494 1142 483.0 1163.0Q472 1184 445 1184Q421 1184 398.5 1162.0Q376 1140 358.5 1103.5Q341 1067 331.0 1022.0Q321 977 321 930Q321 898 327.5 872.0Q334 846 341 826ZM398 379Q371 373 347.0 353.5Q323 334 308.5 306.5Q294 279 294 248Q294 223 307.0 196.5Q320 170 339 154Q352 142 365 136Q380 129 380 123Q380 120 370 117Q332 126 301.5 151.0Q271 176 253.5 211.5Q236 247 236 287Q236 330 253.5 370.0Q271 410 302.5 442.0Q334 474 374 490L345 641Q229 547 174.5 456.5Q120 366 120 277Q120 212 154.0 156.0Q188 100 247.0 65.5Q306 31 380 31Q400 31 420.5 35.0Q441 39 464 45ZM495 55Q593 97 593 227Q593 270 571.0 305.5Q549 341 512.0 362.0Q475 383 429 383Z", "bounds": [50, -398, 661, 1334]}, "wholeRest": {"path": "M50 488V512H733V488H573V378H210V488Z", "bounds": [50, 378, 733, 512]}, "halfRest": {"path": "M50 244V268H210V378H573V268H733V244Z", "bounds": [50, 244, 733, 378]}, "quarterRest": {"path": "M147 878 307 683Q257 624 230.0 581.0Q203 538 203 494Q203 457 227.0 416.5Q251 376 303 314L287 292Q243 320 205 320Q177 320 163.0 301.5Q149 283 149 257Q149 225 162.5 196.5Q176 168 199 142L186 123Q117 173 84.0 214.0Q51 255 51 303Q51 346 78.0 366.0Q105 386 143 386Q173 386 221 363V365L67 570Q168 659 168 736Q168 797 104 878Z", "bounds": [51, 123, 307, 878]}, "eighthRest": {"path": "M155 269 251 609Q230 590 203.5 582.0Q177 574 151 574Q108 574 79.0 597.0Q50 620 50 663Q50 691 70.0 710.5Q90 730 121 730Q150 730 168.5 711.5Q187 693 187 662Q187 640 177 623Q177 617 189 617Q244 617 294 703H312L191 269Z", "bounds": [50, 269, 312, 730]}};
+// game logic injected below
+(()=>{'use strict';
+const $=id=>document.getElementById(id), random=n=>Math.floor(Math.random()*n), pick=a=>a[random(a.length)], shuffle=a=>{const b=[...a];for(let i=b.length-1;i>0;i--){const j=random(i+1);[b[i],b[j]]=[b[j],b[i]]}return b};
+const NAMES=['C','D','E','F','G','A','B'];const di=(letter,octave)=>octave*7+NAMES.indexOf(letter);
+const E4=di('E',4);
+const meters={'2/4':{total:4,groups:[2,2],desc:'2 個四分拍'},'3/4':{total:6,groups:[2,2,2],desc:'3 個四分拍'},'4/4':{total:8,groups:[2,2,2,2],desc:'4 個四分拍'},'6/8':{total:6,groups:[3,3],desc:'六個八分音符，分成 3＋3'}};
+const ITEMS=[
+{id:'whole',label:'全音符',ticks:8,kind:'note'},
+{id:'half',label:'二分音符',ticks:4,kind:'note'},
+{id:'quarter',label:'四分音符',ticks:2,kind:'note'},
+{id:'eighth',label:'八分音符',ticks:1,kind:'note'},
+{id:'dottedHalf',label:'附點二分音符',ticks:6,kind:'note',dot:true},
+{id:'dottedQuarter',label:'附點四分音符',ticks:3,kind:'note',dot:true},
+{id:'wholeRest',label:'全休止符',ticks:8,kind:'rest'},
+{id:'halfRest',label:'二分休止符',ticks:4,kind:'rest'},
+{id:'quarterRest',label:'四分休止符',ticks:2,kind:'rest'},
+{id:'eighthRest',label:'八分休止符',ticks:1,kind:'rest'}];
+const byId=Object.fromEntries(ITEMS.map(x=>[x.id,x]));
+const colors={whole:['#e2b87a','#c28f5a'],half:['#d6a374','#b87c50'],quarter:['#deb089','#bf835e'],eighth:['#e3c16b','#be9346'],dottedHalf:['#adca9c','#75a083'],dottedQuarter:['#c9b1d9','#9980b3'],wholeRest:['#a9c4d9','#759cad'],halfRest:['#a9c4d9','#759cad'],quarterRest:['#a9c4d9','#759cad'],eighthRest:['#a9c4d9','#759cad']};
+const state={stage:'build',meter:'4/4',difficulty:'normal',players:7,dotted:true,rests:true,progress:0,student:0,locked:false,questionNo:0,
+ measures:[[]],activeMeasure:0,mission:null,
+ barEvents:[],barBoundaries:[],chosenBars:new Set(),barRecent:[],
+ tieEvents:[],tieBoundaries:[],tieAnswer:null,tieChosen:null,tieDuration:null,tieOptions:[],tieRecent:[],
+ audio:null,playing:false,soundToken:0,soundOn:true};
+const met=()=>meters[state.meter];
+function duration(t){if(state.meter==='6/8')return `${t} 個八分音符`;if(t===0)return '0 拍';if(t===1)return '半拍';const n=Math.floor(t/2);return t%2?`${n} 拍半`:`${n} 拍`}
+function meterHtml(){const [top,bottom]=state.meter.split('/');return `<span class="meter"><span>${top}</span><span>${bottom}</span></span>`}
+function count(a){return a.reduce((sum,id)=>sum+byId[id].ticks,0)}
+function materials(){return ITEMS.filter(o=>o.ticks<=met().total && (!o.dot||state.dotted) && (o.kind!=='rest'||state.rests) && (o.id!=='wholeRest'||state.meter==='4/4') && (state.difficulty!=='easy'||['whole','half','quarter','eighth','quarterRest'].includes(o.id)));}
+function noteIconRest(key,x,y,size){const shape=VECTOR_PATHS[key],b=shape.bounds,scale=size/(b[3]-b[1]),cx=x-(b[0]+b[2])/2*scale,cy=y+(b[1]+b[3])/2*scale;return `<path d="${shape.path}" transform="translate(${cx.toFixed(3)} ${cy.toFixed(3)}) scale(${scale.toFixed(5)} ${(-scale).toFixed(5)})" fill="#29435c"/>`}
+function noteSVG(o,big=false){o=typeof o==='string'?byId[o]:o;const w=88,h=81,x=40,y=46;let s=`<svg viewBox="0 0 ${w} ${h}" role="img" aria-label="${o.label}">`;
+ if(o.kind==='rest'){
+  if(o.id==='wholeRest'||o.id==='halfRest'){s+=`<line x1="15" y1="31" x2="68" y2="31" stroke="#7a96a6" stroke-width="1.8"/><line x1="15" y1="46" x2="68" y2="46" stroke="#7a96a6" stroke-width="1.8"/>`}
+  s+=noteIconRest(o.id,x,42,(o.id==='wholeRest'||o.id==='halfRest')?17:51);
+ }else{
+  const hollow=['whole','half','dottedHalf'].includes(o.id),whole=o.id==='whole';
+  s+=`<ellipse cx="${x}" cy="${y}" rx="${whole?13:11}" ry="7.4" transform="rotate(-20 ${x} ${y})" fill="${hollow?'#fff8e9':'#29435c'}" stroke="#29435c" stroke-width="${hollow?2.8:1.3}"/>`;
+  if(!whole)s+=`<line x1="${x+10}" y1="${y-2}" x2="${x+10}" y2="8" stroke="#29435c" stroke-width="2.6"/>`;
+  if(o.id==='eighth')s+=`<path d="M${x+10} 8 Q${x+39} 13 ${x+28} 39 Q${x+27} 22 ${x+10} 25Z" fill="#29435c"/>`;
+  if(o.dot)s+=`<circle cx="${x+25}" cy="${y-1}" r="3.3" fill="#29435c"/>`;
+ }
+ return s+'</svg>'}
+function pitchIndex(pitch){const m=pitch.match(/^([A-G])(\d)$/);return di(m[1],Number(m[2]))}
+function staffSVG(ev){const o=byId[ev.id],x=44,bottom=82,steps=(pitchIndex(ev.pitch)-E4),y=bottom-steps*7;let s='<svg viewBox="0 0 84 115" role="img" aria-label="'+ev.pitch+' '+o.label+'">';
+ for(let k=0;k<5;k++)s+=`<line x1="4" y1="${bottom-k*14}" x2="80" y2="${bottom-k*14}" stroke="#8199ac" stroke-width="1.4"/>`;
+ if(o.kind==='rest')s+=noteIconRest(o.id,x,49,o.id==='wholeRest'||o.id==='halfRest'?18:44);
+ else{
+  for(let i=E4-2;i>=pitchIndex(ev.pitch);i-=2){const yy=bottom+(E4-i)*7;s+=`<line x1="26" y1="${yy}" x2="63" y2="${yy}" stroke="#29435c" stroke-width="1.6"/>`}
+  const hollow=['whole','half','dottedHalf'].includes(o.id);
+  s+=`<ellipse cx="${x}" cy="${y}" rx="10.5" ry="6.5" transform="rotate(-20 ${x} ${y})" fill="${hollow?'white':'#29435c'}" stroke="#29435c" stroke-width="${hollow?2.6:1}"/>`;
+  if(o.id!=='whole'){
+   const down=pitchIndex(ev.pitch)>=di('B',4);
+   s+=`<line x1="${down?x-9:x+9}" y1="${y}" x2="${down?x-9:x+9}" y2="${down?y+42:y-42}" stroke="#29435c" stroke-width="2.2"/>`;
+   if(o.id==='eighth')s+=down?`<path d="M${x-9} ${y+42} Q${x+19} ${y+39} ${x+19} ${y+20} Q${x+12} ${y+32} ${x-9} ${y+27}Z" fill="#29435c"/>`:`<path d="M${x+9} ${y-42} Q${x+31} ${y-33} ${x+26} ${y-16} Q${x+21} ${y-28} ${x+9} ${y-24}Z" fill="#29435c"/>`;
+  }
+  if(o.dot)s+=`<circle cx="${x+19}" cy="${y-3}" r="2.7" fill="#29435c"/>`;
+ }
+ return s+'</svg>'}
+function msg(text,klass=''){$('feedback').className='feedback'+(klass?' '+klass:'');$('feedback').textContent=text;}
+function optionsNumber(){const s=$('playersSelect');for(let i=1;i<=15;i++){const x=document.createElement('option');x.value=i;x.textContent=i+' 人';if(i===7)x.selected=true;s.appendChild(x)}}
+function progressUI(){
+ $('partyTitle').textContent=`🎒 ${state.players} 位探險家`;
+ $('students').innerHTML=Array.from({length:state.players},(_,i)=>`<div class="student ${i===state.student?'current':''} ${i<state.progress?'done':''}">${i+1} 號</div>`).join('');
+ $('studentNow').textContent=(state.student+1)+' 號';$('clearCount').textContent=state.progress+' / '+state.players;
+}
+function explain(){
+ const copy={build:['第一關｜修復斷橋','利用各種音符木板搭出完整的一小節。點選素材即可放上橋，或把素材拖到橋上。', '每個木板的長度代表音符的時值；休止符也會佔據相同長度。'],bars:['第二關｜節奏列車調度站','節奏列車沿途的小節分界消失了。幫它把小節線放回正確的位置，列車才能準時抵達。','從左到右累積時值，達到拍號指定的總量才放小節線。'],tie:['第三關｜聲音接力站','找出相鄰且同音高的兩個音符，讓聲音不中斷；如果沒有適合的音符，也可以選「無法連結」。','連結線只連相同音高、直接相鄰的音符，不可以跨過休止符。']};
+ const t=copy[state.stage];$('stageTitle').textContent=t[0];$('stageIntro').textContent=t[1];$('stageTip').textContent='💡 '+t[2];$('stageMetric').textContent=`${state.meter}｜${met().desc}｜${{easy:'簡單',normal:'普通',hard:'困難'}[state.difficulty]}`;
+ const teachers={build:['先讓孩子報出每張木板的時值，再點選素材。','附點音符：原本時值加上它的一半。','困難模式需完成兩個小節，留意小節線兩側各自的總量。'],bars:['2/4、3/4、4/4 以四分音符為一拍。','6/8 是兩組三個八分音符（3＋3），不等同於 3/4 的拍感。','小節線不能切斷音符，要插在兩個音符之間。'],tie:['同音高的相鄰兩個音符可以連結成一個持續的聲音。','連結線可以跨越小節線，但不能跨休止符。','連結後第二個音符不重新發音，時值相加。']};
+ $('teacherNotes').innerHTML=teachers[state.stage].map(t=>`<li>${t}</li>`).join('');
+ $('teacherTip').textContent=state.stage==='tie'?'本關題目會變動：有跨小節、同小節，還可能沒有可連的位置。':'建議輪流到白板操作，其他小朋友口頭討論，避免一個人包辦。';
+}
+function renderScene(){
+ const scene=$('scene');scene.className='scene scene-'+(state.stage==='build'?'bridge':state.stage==='bars'?'train':'tie')+(state.locked?' solved':'');
+ const tag=$('sceneTag');tag.textContent=state.stage==='build'?'🌉 河谷修橋現場':state.stage==='bars'?'🚂 節奏列車調度站':'✨ 聲音接力站';
+ if(state.stage==='build'){
+  const placed=state.measures[state.activeMeasure]||[],total=met().total,used=count(placed),rest=Math.max(0,total-used);
+  const planks=placed.map((id,i)=>{const item=byId[id],c=colors[id];return `<div class="wood" style="flex:0 0 calc(${(item.ticks/total*100).toFixed(3)}% - 2px);--wood1:${c[0]};--wood2:${c[1]}" title="${item.label}：${duration(item.ticks)}"><div class="music-icon">${noteSVG(item)}</div></div>`}).join('');
+  const ghost=rest>0?`<div class="unfinished" style="flex:0 0 calc(${rest/total*100}% - 2px)">＋</div>`:'';
+  $('sceneContent').innerHTML=`<div class="sun"></div><div class="mountains"></div><div class="river"></div><div class="shore left"></div><div class="shore right"></div><div class="bridge-rail"></div><div class="bridge-live" id="bridgeDrop" aria-label="音符木板拼成的橋">${planks}${ghost}</div><div class="traveler" style="left:${3+state.progress/Math.max(1,state.players)*76}%;--fromX:${3+Math.max(0,state.progress-1)/Math.max(1,state.players)*76}%;--toX:${3+state.progress/Math.max(1,state.players)*76}%">🧙</div><div class="castle">🏰</div><div class="bridge-bottom-note">第 ${state.activeMeasure+1} 小節：${duration(used)} / ${duration(total)} · 已通關 ${state.progress}/${state.players} 題</div>`;
+  const drop=$('bridgeDrop');drop.ondragover=e=>{e.preventDefault()};drop.ondrop=e=>{e.preventDefault();add(e.dataTransfer.getData('text/plain'))};
+ }else if(state.stage==='bars'){
+  $('sceneContent').innerHTML=`<span class="cloud">☁️</span><div class="station">🚉</div><div class="tracks"></div><div class="train" style="left:${3+state.progress/Math.max(1,state.players)*67}%;--fromX:${3+Math.max(0,state.progress-1)/Math.max(1,state.players)*67}%;--toX:${3+state.progress/Math.max(1,state.players)*67}%">🚂</div><div class="milemarkers"><span>起點</span><span>節奏站</span><span>終點</span></div>`;
+ }else $('sceneContent').innerHTML=`<span class="cloud">✨</span><span class="orb">🎶</span><span class="orb orb-right">🎵</span><div class="relay-rope"></div><div class="caption">找到相同音高 · 連成一個長音</div>`;
+}
+function render(){explain();progressUI();renderScene();$('nextBtn').hidden=!state.locked;$('checkBtn').disabled=state.locked;$('undoBtn').disabled=state.locked;$('clearBtn').disabled=state.locked;
+ $('listenBtn').disabled=state.playing ||(state.stage==='build'&&state.measures.every(m=>!m.length));
+ if(state.stage==='build')renderBuild();else if(state.stage==='bars')renderBars();else renderTie();}
+// ---- First game: playable bridge built directly from real note-shaped planks ----
+function selectMission(){if(state.difficulty!=='hard')return null;let missions=[];
+ if(state.dotted&&materials().some(x=>x.dot))missions.push({id:'dot',text:'至少放入 1 個附點音符'});
+ if(state.rests&&materials().some(x=>x.kind==='rest'))missions.push({id:'rest',text:'至少放入 1 個休止符'});
+ missions.push({id:'eighth',text:'至少放入 1 個八分音符'});
+ return pick(missions);
+}
+function buildRequirement(){return state.difficulty==='easy'?'把橋面填滿即可。':state.difficulty==='normal'?'至少使用 2 種不同的音符／休止符材料。':`完成兩個小節，至少使用 2 種材料，且${state.mission.text}。`}
+function renderBuild(){const total=met().total,placed=state.measures[state.activeMeasure],sum=count(placed);
+ let chooser='';if(state.measures.length>1)chooser=`<div class="measure-picker">${state.measures.map((m,i)=>`<button class="measure-btn ${i===state.activeMeasure?'current':''}" data-measure="${i}">第 ${i+1} 小節 ${count(m)===total?'✅':''}<span class="mini-piece">${duration(count(m))}/${duration(total)}</span></button>`).join('')}</div>`;
+ const groups=[];let n=0;met().groups.forEach((x,i)=>{n+=x;if(i<met().groups.length-1)groups.push(n)});
+ const cells=Array.from({length:total},(_,i)=>`<span class="bit ${i<sum?'fill':''} ${groups.includes(i)?'group':''}"></span>`).join('');
+ const tiles=placed.map((id,i)=>`<div class="placed"><button class="remove" aria-label="移除第 ${i+1} 張木板" data-remove="${i}" ${state.locked?'disabled':''}>×</button><span class="music-icon">${noteSVG(id)}</span><span>${byId[id].label}</span></div>`).join('');
+ $('questionArea').innerHTML=`<div class="question"><div class="question-title"><span>🪵 橋面：${meterHtml()}｜${duration(sum)} / ${duration(total)}</span><span>${state.measures.length} 個小節</span></div><p class="qtext">任務：${buildRequirement()}</p>${chooser}<div class="measure-line" id="measureDrop"><strong>│</strong>${tiles||'<span class="empty">點下方素材，音符木板會真的出現在上方的橋面。</span>'}<strong>│</strong></div><div class="beat-track">${cells}</div><div class="score-sub">${sum>total?`⚠ 超過 ${duration(sum-total)}`:sum===total?'✅ 這一小節已填滿':`還差 ${duration(total-sum)}`}${state.meter==='6/8'?'｜6/8 分成 3＋3 兩組':''}</div></div><h3>🪵 點選下方素材，拼成橋面：</h3><div class="pieces">${materials().map(o=>`<button class="piece" draggable="${!state.locked}" data-add="${o.id}" ${state.locked?'disabled':''}><span class="music-icon">${noteSVG(o)}</span><span class="n">${o.label}</span><span class="d">${duration(o.ticks)}</span></button>`).join('')}</div>`;
+ $('questionArea').querySelectorAll('[data-add]').forEach(b=>{b.onclick=()=>add(b.dataset.add);b.ondragstart=e=>e.dataTransfer.setData('text/plain',b.dataset.add)});
+ $('questionArea').querySelectorAll('[data-remove]').forEach(b=>b.onclick=()=>{state.measures[state.activeMeasure].splice(Number(b.dataset.remove),1);render()});
+ $('questionArea').querySelectorAll('[data-measure]').forEach(b=>b.onclick=()=>{state.activeMeasure=Number(b.dataset.measure);render()});
+ const drop=$('measureDrop');drop.ondragover=e=>e.preventDefault();drop.ondrop=e=>{e.preventDefault();add(e.dataTransfer.getData('text/plain'))};
+}
+function add(id){if(state.locked||!materials().some(x=>x.id===id))return;
+ state.measures[state.activeMeasure].push(id);render();}
+function checkBuild(){const totals=state.measures.map(count),total=met().total;
+ const wrong=totals.findIndex(n=>n!==total);if(wrong>=0){state.activeMeasure=wrong;render();msg(`第 ${wrong+1} 小節${totals[wrong]<total?'還差 '+duration(total-totals[wrong]):'超過 '+duration(totals[wrong]-total)}，請調整木板。`,'bad');return false;}
+ const combined=state.measures.flat(),types=new Set(combined);
+ if(state.difficulty!=='easy'&&types.size<2){msg('這關需要至少 2 種不同的材料，再換一種音符試試。','bad');return false;}
+ if(state.difficulty==='hard'){
+  const good=state.mission.id==='dot'?combined.some(x=>byId[x].dot):state.mission.id==='rest'?combined.some(x=>byId[x].kind==='rest'):combined.includes('eighth');
+  if(!good){msg('橋的總長正確，但還沒完成額外任務：'+state.mission.text+'。','bad');return false;}
+ }
+ return true;}
+// ---- Second game: railway barline dispatch ----
+function sampleMeasure(maxNotes=null){const target=met().total;const available=materials().filter(x=>x.ticks<=target&&x.id!=='wholeRest');
+ const max= maxNotes || (state.difficulty==='easy'?5:state.difficulty==='normal'?6:7);
+ const min=2;
+ function recur(left,pieces){if(left===0)return pieces.length>=min?pieces:null;if(pieces.length>=max)return null;
+  const elig=shuffle(available.filter(x=>x.ticks<=left));
+  for(const item of elig){const res=recur(left-item.ticks,[...pieces,item.id]);if(res)return res;}
+  return null;
+ }
+ for(let attempts=0;attempts<24;attempts++){const r=recur(target,[]);if(r&&r.length<=max&&r.length>=2)return r;}
+ return Array(target).fill('eighth');
+}
+function createBars(){const barCount=state.difficulty==='easy'?2:state.difficulty==='normal'?3:4;
+ let signature='',events=[],boundaries=[];
+ for(let attempt=0;attempt<50;attempt++){
+  events=[];boundaries=[];
+  for(let j=0;j<barCount;j++){const measure=sampleMeasure();events.push(...measure);if(j<barCount-1)boundaries.push(events.length-1);}
+  signature=events.join('/')+'-'+boundaries.join(',');if(!state.barRecent.includes(signature))break;
+ }
+ state.barRecent.push(signature);if(state.barRecent.length>5)state.barRecent.shift();
+ state.barEvents=events;state.barBoundaries=boundaries;state.chosenBars=new Set();
+}
+function renderBars(){const old=$('scoreScroll')?.scrollLeft||0,amount=state.difficulty==='easy'?2:state.difficulty==='normal'?3:4;
+ let html=`<div class="question"><div class="question-title"><span>🚂 分成 ${amount} 個小節｜${meterHtml()}</span><span>需要放 ${amount-1} 條小節線</span></div><p class="qtext">點選音符之間的「＋」，放上小節線。點第二次可移除。</p><div class="score-scroll" id="scoreScroll"><div class="score-stream">`;
+ state.barEvents.forEach((id,i)=>{
+  html+=`<div class="stream-note"><div class="music-icon">${noteSVG(id)}</div>${state.difficulty==='easy'?`<span>${byId[id].label}</span>`:''}</div>`;
+  if(i<state.barEvents.length-1)html+=`<button class="gap ${state.chosenBars.has(i)?'on':''}" data-gap="${i}" ${state.locked?'disabled':''} aria-label="在第 ${i+1} 和第 ${i+2} 個音符間放小節線">${state.chosenBars.has(i)?'│':'＋'}</button>`;
+ });
+ html+='</div></div><div class="score-sub">請從左到右閱讀音符；到達一小節的拍數，才放入小節線。</div><div class="train-progress"><div class="fill" style="width:'+state.chosenBars.size/(amount-1)*100+'%"></div></div></div>';
+ $('questionArea').innerHTML=html;$('scoreScroll').scrollLeft=old;
+ $('questionArea').querySelectorAll('[data-gap]').forEach(b=>b.onclick=()=>{const i=Number(b.dataset.gap);state.chosenBars.has(i)?state.chosenBars.delete(i):state.chosenBars.add(i);renderBars()});
+}
+function checkBars(){if(state.chosenBars.size===state.barBoundaries.length&&state.barBoundaries.every(i=>state.chosenBars.has(i)))return true;
+ msg(`還沒有放對喔！從最左邊開始，把音符時值累加到 ${state.meter} 的一小節容量，再放小節線。`,'bad');return false;}
+// ---- Third game: varied relay ties, sometimes none, sometimes interior or across barlines ----
+const PITCHES=['C4','D4','E4','F4','G4','A4','B4','C5','D5'];
+function createTie(){let signature='';for(let attempt=0;attempt<70;attempt++){
+ const numberBars=state.difficulty==='hard'?3:2;
+ const measures=[];
+ for(let j=0;j<numberBars;j++)measures.push(sampleMeasure(state.difficulty==='easy'?4:6));
+ const boundaries=[],ids=[];measures.forEach((m,i)=>{ids.push(...m);if(i<numberBars-1)boundaries.push(ids.length-1)});
+ const validGaps=[];for(let i=0;i<ids.length-1;i++){if(byId[ids[i]].kind==='note'&&byId[ids[i+1]].kind==='note')validGaps.push(i)}
+ if(!validGaps.length)continue;
+ const noneChance=state.difficulty==='easy'?0:state.difficulty==='normal'?.16:.27;
+ let target=Math.random()<noneChance?null:pick(validGaps);
+ // Prefer a mix of in-bar and across-bar examples; no fixed tie position.
+ if(target!==null&&state.difficulty!=='easy'&&Math.random()<.4){const cross=validGaps.filter(i=>boundaries.includes(i));if(cross.length)target=pick(cross)}
+ const events=ids.map(id=>({id,pitch:null}));
+ for(let i=0;i<events.length;i++){
+  if(byId[events[i].id].kind==='rest'){events[i].pitch='G4';continue;}
+  if(target!==null&&i===target+1){events[i].pitch=events[i-1].pitch;continue;}
+  const prev=i>0&&byId[events[i-1].id].kind==='note'?events[i-1].pitch:null;
+  const avail=PITCHES.filter(p=>p!==prev);
+  // Hard problems sometimes repeat a NON-adjacent pitch as a visual distractor.
+  const echo=i>1&&Math.random()<.32?events[i-2].pitch:null;
+  events[i].pitch=(echo&&avail.includes(echo))?echo:pick(avail);
+ }
+ // Precisely one adjacent equal-pitch pair when target is not null.
+ const pairs=[];for(let i=0;i<events.length-1;i++)if(byId[events[i].id].kind==='note'&&byId[events[i+1].id].kind==='note'&&events[i].pitch===events[i+1].pitch)pairs.push(i);
+ if(target===null?pairs.length!==0:pairs.length!==1||pairs[0]!==target)continue;
+ signature=ids.join(',')+'|'+events.map(e=>e.pitch).join(',')+'|'+String(target);
+ if(state.tieRecent.includes(signature))continue;
+ state.tieRecent.push(signature);if(state.tieRecent.length>8)state.tieRecent.shift();
+ state.tieEvents=events;state.tieBoundaries=boundaries;state.tieAnswer=target;state.tieChosen=null;state.tieDuration=null;
+ const answerTicks=target===null?0:byId[events[target].id].ticks+byId[events[target+1].id].ticks;
+ let choices=[answerTicks];const pool=[1,2,3,4,5,6,7,8,9,10,12].filter(t=>t!==answerTicks);for(const v of shuffle(pool)){if(choices.length>=4)break;choices.push(v)}state.tieOptions=shuffle(choices);
+ return;
+ }
+ // Extremely unlikely fallback: generate two valid measures with one matching adjacent pair.
+ const left=sampleMeasure(),right=sampleMeasure(),ids=[...left,...right];
+ const events=ids.map((id,i)=>({id,pitch:PITCHES[i%PITCHES.length]}));
+ const valid=[];for(let i=0;i<events.length-1;i++)if(byId[events[i].id].kind==='note'&&byId[events[i+1].id].kind==='note')valid.push(i);
+ if(valid.length){let target=valid[0];for(let i=0;i<events.length;i++){if(byId[events[i].id].kind!=='note')continue;let prev=i>0&&byId[events[i-1].id].kind==='note'?events[i-1].pitch:null;events[i].pitch=i===target+1?events[i-1].pitch:pick(PITCHES.filter(p=>p!==prev));}
+  state.tieAnswer=target;
+ }else state.tieAnswer=null;
+ state.tieEvents=events;state.tieBoundaries=[left.length-1];state.tieChosen=null;state.tieDuration=null;
+ const ticks=state.tieAnswer===null?0:byId[events[state.tieAnswer].id].ticks+byId[events[state.tieAnswer+1].id].ticks;
+ state.tieOptions=shuffle([ticks,...[1,2,3,4,5,6,8].filter(n=>n!==ticks).slice(0,3)]);
+}
+function renderTie(){const old=$('tieScroll')?.scrollLeft||0,complex=state.difficulty==='hard',none=state.tieChosen===-1;
+ let html=`<div class="question"><div class="question-title"><span>✨ 相同音高的聲音接力｜${meterHtml()}</span><span>${state.tieEvents.length} 個音符／休止符</span></div><p class="qtext">選出一組「相鄰、音高相同」的音符，加上連結線。如果找不到，請選「無法連結」。</p><div class="score-scroll" id="tieScroll"><div class="tie-row">`;
+ state.tieEvents.forEach((ev,i)=>{
+  html+=`<div class="tie-event">${staffSVG(ev)}<div class="pitch">${state.difficulty==='easy'?ev.pitch+' · ':''}${duration(byId[ev.id].ticks)}</div></div>`;
+  if(i<state.tieEvents.length-1){
+   html+=`<button class="tie-gap ${state.tieChosen===i?'on':''}" data-tie="${i}" ${state.locked?'disabled':''} aria-label="連結第 ${i+1} 與 ${i+2} 個音符">${state.tieChosen===i?'⌣':'＋'}</button>`;
+   if(state.tieBoundaries.includes(i))html+='<div class="bar-sep" title="小節線"></div>';
+  }
+ });
+ html+=`</div></div><div class="tie-choice"><button id="noneTie" class="btn soft ${none?'picked':''}" ${state.locked?'disabled':''}>✕ 無法連結</button><span class="tag">按「＋」放連結線 · 再按一次取消</span></div>`;
+ if(complex&&state.tieChosen!==null&&state.tieChosen!==-1){
+  html+=`<div class="extra"><strong>進階題：</strong>若這兩個音符連成一個長音，總共會持續多久？<div class="answerchoice">${state.tieOptions.map(t=>`<button data-duration="${t}" class="${state.tieDuration===t?'chosen':''}" ${state.locked?'disabled':''}>${duration(t)}</button>`).join('')}</div></div>`;
+ }
+ html+=`<div class="score-sub">連結線可以出現在小節內，也可以跨越小節線；休止符不能連結。</div></div>`;
+ $('questionArea').innerHTML=html;$('tieScroll').scrollLeft=old;
+ $('questionArea').querySelectorAll('[data-tie]').forEach(b=>b.onclick=()=>{const x=Number(b.dataset.tie);state.tieChosen=state.tieChosen===x?null:x;state.tieDuration=null;renderTie()});
+ $('noneTie').onclick=()=>{state.tieChosen=state.tieChosen===-1?null:-1;state.tieDuration=null;renderTie()};
+ $('questionArea').querySelectorAll('[data-duration]').forEach(b=>b.onclick=()=>{state.tieDuration=Number(b.dataset.duration);renderTie()});
+}
+function checkTie(){const ok=state.tieAnswer===null?state.tieChosen===-1:state.tieChosen===state.tieAnswer;
+ if(!ok){msg(state.tieAnswer===null?'這題其實沒有可連的相鄰同音高音符，試試「無法連結」。':'再仔細看！必須是相鄰、相同音高、而且都不是休止符的兩個音符。','bad');return false;}
+ if(state.difficulty==='hard'&&state.tieAnswer!==null){const total=byId[state.tieEvents[state.tieAnswer].id].ticks+byId[state.tieEvents[state.tieAnswer+1].id].ticks;
+ if(state.tieDuration!==total){msg('連結線的位置對了！再算算兩個音符連起來，總共持續多久。','bad');return false;}}
+ return true;}
+function success(){state.locked=true;state.progress=Math.min(state.players,state.progress+1);const congrats={build:'🪵 橋面修好了！',bars:'🚂 小節線正確！列車順利發車！',tie:'✨ 聲音順利接力！'};
+ msg(congrats[state.stage]+(state.progress>=state.players?` 🌟 全部 ${state.players} 位探險家完成！獲得節奏大師徽章！`:' ⭐ 得到一顆星星！換下一位挑戰。'),'good');render();celebrate(state.progress>=state.players);playSfx('win');}
+function check(){if(state.locked)return;const ok=state.stage==='build'?checkBuild():state.stage==='bars'?checkBars():checkTie();if(ok)success();else playSfx('wrong')}
+function makeQuestion(){state.locked=false;state.questionNo++;state.measures=Array.from({length:state.stage==='build'&&state.difficulty==='hard'?2:1},()=>[]);state.activeMeasure=0;state.mission=selectMission();
+ state.barEvents=[];state.barBoundaries=[];state.chosenBars=new Set();state.tieEvents=[];state.tieBoundaries=[];state.tieChosen=null;state.tieDuration=null;
+ if(state.stage==='bars')createBars();if(state.stage==='tie')createTie();render();
+ msg(`輪到 ${state.student+1} 號探險家！一起想想怎麼完成這一題。`);
+}
+function next(){if(!state.locked)return;if(state.progress>=state.players){state.progress=0;state.student=0;}else state.student=(state.student+1)%state.players;makeQuestion()}
+function reset(){state.progress=0;state.student=0;makeQuestion()}
+function undo(){if(state.locked)return;if(state.stage==='build')state.measures[state.activeMeasure].pop();else if(state.stage==='bars'){const xs=[...state.chosenBars];state.chosenBars.delete(xs[xs.length-1]);}else{state.tieChosen=null;state.tieDuration=null;}render()}
+function clear(){if(state.locked)return;if(state.stage==='build')state.measures[state.activeMeasure]=[];else if(state.stage==='bars')state.chosenBars.clear();else {state.tieChosen=null;state.tieDuration=null;}render()}
+function hint(){if(state.stage==='build')msg(state.difficulty==='hard'?`💡 把兩小節分開計算。這一題還要求：${state.mission.text}。`:state.difficulty==='normal'?'💡 拍數相同不代表材料種類不同，記得混合使用至少兩種音符／休止符。':'💡 一個四分音符佔兩個八分音符的長度；附點會再增加原來時值的一半。');
+ else if(state.stage==='bars')msg(`💡 從最左邊開始數，每累積到 ${duration(met().total)} 就應該有一條小節線。`);
+ else msg('💡 找兩個緊鄰的音符：它們的符頭必須在五線譜的相同高度。留意小節線與休止符，但別認為只有跨小節才能連結。');}
+// ---- Audio: each rhythm can be auditioned. Tie means the second note does not reattack. ----
+function playRhythm(){if(state.playing)return;if(!state.soundOn){msg("目前音效已關閉，可按右上角開啟音效。");return;}
+ let events=[];if(state.stage==='build')events=state.measures.flatMap(m=>m.map(id=>({id,pitch:'G4'})));
+ else if(state.stage==='bars')events=state.barEvents.map(id=>({id,pitch:'G4'}));
+ else events=state.tieEvents;
+ if(!events.length)return;
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC){msg('此瀏覽器不支援音訊，其他功能仍可正常玩。','bad');return;}
+ try{if(!state.audio)state.audio=new AC();state.audio.resume();}catch(e){msg('瀏覽器無法播放聲音。','bad');return;}
+ const ctx=state.audio,unit=.25,start=ctx.currentTime+.1;
+ const freqs={C4:261.63,D4:293.66,E4:329.63,F4:349.23,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33};
+ let tick=0;
+ for(let i=0;i<events.length;i++){
+  const ev=events[i],item=byId[ev.id],join=state.stage==='tie'&&state.tieChosen===i-1&&i>0&&byId[events[i-1].id].kind==='note'&&item.kind==='note'&&events[i-1].pitch===ev.pitch;
+  if(item.kind==='note'&&!join){let d=item.ticks;
+   if(state.stage==='tie'&&state.tieChosen===i&&events[i+1]&&byId[events[i+1].id].kind==='note'&&ev.pitch===events[i+1].pitch)d+=byId[events[i+1].id].ticks;
+   const o=ctx.createOscillator(),g=ctx.createGain(),t=start+tick*unit,end=t+d*unit;
+   o.type='triangle';o.frequency.value=freqs[ev.pitch]||392;
+   g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.11,t+.018);g.gain.setValueAtTime(.11,Math.max(t+.019,end-.06));g.gain.linearRampToValueAtTime(.0001,end);
+   o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(end+.01);
+  }
+  tick+=item.ticks;
+ }
+ const pulse=state.meter==='6/8'?3:2;
+ for(let k=0;k<tick;k+=pulse){const o=ctx.createOscillator(),g=ctx.createGain(),t=start+k*unit;o.type='sine';o.frequency.value=k%met().total===0?930:670;g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.023,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+.08);o.connect(g);g.connect(ctx.destination);o.start(t);o.stop(t+.09)}
+ state.playing=true;$('listenBtn').disabled=true;const ticket=++state.soundToken;
+ setTimeout(()=>{if(state.soundToken===ticket){state.playing=false;render()}},(tick*unit+.2)*1000);
+}
+
+// Classroom extras: tiny award animation, synthesised sounds, and full-screen control.
+function soundButton(){const b=$('soundToggle');b.textContent=state.soundOn?'🔊 音效：開':'🔇 音效：關';b.setAttribute('aria-pressed',String(state.soundOn))}
+$('soundToggle').onclick=()=>{state.soundOn=!state.soundOn;soundButton()};
+$('fullscreenBtn').onclick=async()=>{try{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()}catch(e){msg('此裝置可能不允許全螢幕，仍可直接操作遊戲。')}};
+document.addEventListener('fullscreenchange',()=>{$('fullscreenBtn').textContent=document.fullscreenElement?'⛶ 離開全螢幕':'⛶ 全螢幕'});
+function playSfx(kind){if(!state.soundOn)return;try{
+ const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return;
+ if(!state.audio)state.audio=new AC();const ctx=state.audio;if(ctx.state==='suspended')ctx.resume();
+ const notes=kind==='win'?[523.25,659.25,783.99,1046.5]:[260,220];
+ notes.forEach((f,i)=>{const o=ctx.createOscillator(),g=ctx.createGain(),start=ctx.currentTime+.02+i*(kind==='win'?.095:.10);o.type=kind==='win'?'sine':'triangle';o.frequency.setValueAtTime(f,start);g.gain.setValueAtTime(.0001,start);g.gain.linearRampToValueAtTime(.065,start+.013);g.gain.exponentialRampToValueAtTime(.0001,start+.17);o.connect(g);g.connect(ctx.destination);o.start(start);o.stop(start+.19)});
+ }catch(e){} }
+function celebrate(grand=false){const layer=$('reward');layer.innerHTML='';const count=grand?25:12;
+ for(let i=0;i<count;i++){let s=document.createElement('span');s.className='reward-spark';s.textContent=(grand?['🌟','🎉','⭐','🎵']:['⭐','✨','🎵'])[i%(grand?4:3)];s.style.left=(17+Math.random()*66)+'%';s.style.top=(29+Math.random()*26)+'%';s.style.setProperty('--dx',(Math.random()*300-150)+'px');s.style.setProperty('--dy',(-45-Math.random()*190)+'px');s.style.setProperty('--rotation',(Math.random()*160-80)+'deg');s.style.animationDelay=(Math.random()*.19)+'s';layer.appendChild(s)}
+ setTimeout(()=>{if(layer.childElementCount)layer.innerHTML=''},1300);
+}
+
+optionsNumber();$('checkBtn').onclick=check;$('listenBtn').onclick=playRhythm;$('nextBtn').onclick=next;$('undoBtn').onclick=undo;$('clearBtn').onclick=clear;$('hintBtn').onclick=hint;$('resetAll').onclick=reset;
+$('meterSelect').onchange=e=>{state.meter=e.target.value;reset()};$('difficultySelect').onchange=e=>{state.difficulty=e.target.value;reset()};$('playersSelect').onchange=e=>{state.players=Number(e.target.value);reset()};$('dotted').onchange=e=>{state.dotted=e.target.checked;reset()};$('rests').onchange=e=>{state.rests=e.target.checked;reset()};
+document.querySelectorAll('[data-stage]').forEach(b=>b.onclick=()=>{state.stage=b.dataset.stage;document.querySelectorAll('[data-stage]').forEach(t=>t.setAttribute('aria-selected',String(t===b)));reset()});
+makeQuestion();soundButton();
+})();
+
+</script></body></html>

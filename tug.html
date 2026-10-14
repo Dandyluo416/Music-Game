@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>音符拔河大賽｜音樂遊戲教室</title>
+<style>
+:root{--ink:#1f3550;--navy:#193d59;--red:#e25561;--blue:#4188dd;--border:#d9e5ec;--shade:#f3f7fa;--gold:#ffc454}
+*{box-sizing:border-box}html,body{height:100%;height:100dvh;width:100%;margin:0;overflow:hidden}body{display:flex;flex-direction:column;background:linear-gradient(115deg,#fff3eb 0%,#eef6fe 55%,#e6f4fa 100%);color:var(--ink);font-family:"Microsoft JhengHei","Noto Sans TC",system-ui,sans-serif}
+button,select{font:inherit}button,a,select{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.46;cursor:not-allowed}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #eeae36;outline-offset:2px}
+.game-top{height:48px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;background:linear-gradient(100deg,#203e61,#276e8a);padding:5px clamp(12px,1.5vw,23px);color:white;box-shadow:0 3px 15px #183e5c24}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand h1{font-size:clamp(1.08rem,1.7vw,1.5rem);margin:0;white-space:nowrap}.brand small{font-size:.8rem;color:#cce9f2;font-weight:700;white-space:nowrap}
+.top-actions{display:flex;gap:8px;align-items:center;flex:none}.top-btn{border:1px solid #bde4ec8c;background:#ffffff20;border-radius:10px;color:white;text-decoration:none;font-weight:900;font-size:.85rem;padding:7px 12px;white-space:nowrap;min-height:35px}.top-btn:hover{background:#ffffff38}
+main{display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;gap:7px;flex:1;min-height:0;width:100%;max-width:1650px;margin:0 auto;padding:8px clamp(9px,1vw,16px)}
+.panel{background:#ffffffed;border:1px solid var(--border);border-radius:14px;box-shadow:0 3px 11px #173f6310}
+.controls{padding:8px 11px;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px;min-height:0}
+.settings{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}.field label{display:block;font-weight:900;font-size:clamp(.72rem,.8vw,.9rem);color:#5b7187;margin:0 0 3px}.field select{display:block;width:100%;min-width:0;height:42px;background:#f7fafc;border:1px solid #ccdbe7;border-radius:9px;padding:4px 7px;font-size:clamp(.77rem,.95vw,.95rem);font-weight:900;color:var(--ink)}
+.game-actions{display:flex;align-items:end;gap:6px;flex-wrap:nowrap}.btn{height:42px;border:0;border-radius:9px;padding:7px clamp(8px,.85vw,13px);font-size:clamp(.79rem,.85vw,.93rem);font-weight:900;white-space:nowrap}.primary{background:#136f75;color:white}.secondary{background:#e7eff5;color:#2d5770}.btn:hover:not(:disabled){filter:brightness(.96)}
+.status{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:9px;min-height:48px;padding:5px 13px}
+.teamname{display:flex;align-items:center;gap:9px;font-size:clamp(1.05rem,1.7vw,1.52rem);font-weight:1000;min-width:0;white-space:nowrap}.teamname.redname{color:#c83f4b}.teamname.bluename{color:#2865b3;justify-content:flex-end}.score{padding:3px 13px;border-radius:10px;background:#f5f8fc;color:var(--ink);font-variant-numeric:tabular-nums;font-size:1.12rem;white-space:nowrap}
+.clock{text-align:center;font-variant-numeric:tabular-nums;font-size:clamp(1.6rem,2.4vw,2.22rem);font-weight:1000;line-height:1}.clock small{display:block;font-size:.67rem;line-height:1.2;font-weight:900;color:#647a8c;margin-top:4px}
+.arena{padding:6px 11px;min-height:0;display:flex;flex-direction:column;gap:3px}.arena-title{font-size:.87rem;font-weight:1000;text-align:center;line-height:1.1;white-space:nowrap}.crowd{letter-spacing:.24em;display:inline-block;animation:cheer .9s ease-in-out infinite alternate}
+.tug{height:clamp(65px,10.9vh,96px);min-height:0;border-radius:12px;position:relative;overflow:hidden;background:linear-gradient(#cdeafa 0 51%,#b1e0b0 52%);border:1px solid #bbdbe1}
+.tug::after{content:"";position:absolute;bottom:6px;left:0;right:0;border-bottom:3px dashed #fff8}.rope{position:absolute;left:4%;right:4%;height:9px;top:59%;background:repeating-linear-gradient(105deg,#bc864a 0 13px,#ebc18a 14px 26px);border-radius:10px;box-shadow:0 2px 3px #5932184f}
+.mid{position:absolute;left:50%;top:0;bottom:0;width:4px;background:repeating-linear-gradient(#fff 0 10px,#e94c54 10px 20px);opacity:.6;z-index:1}.knot{position:absolute;left:50%;top:calc(59% - 17px);width:36px;height:36px;line-height:27px;text-align:center;background:var(--gold);border:4px solid #bb8136;border-radius:50%;font-size:18px;transform:translateX(-50%);transition:left .3s;z-index:4;box-shadow:0 2px 6px #584a346a}
+.puller{position:absolute;top:calc(59% - 43px);font-size:clamp(2rem,4.5vw,3.2rem);line-height:1;z-index:3;filter:drop-shadow(0 2px 2px #0004);animation:heave .5s ease-in-out infinite alternate;white-space:nowrap;transition:left .3s,right .3s}.redpull{left:12%;transform-origin:center bottom}.bluepull{right:12%;transform-origin:center bottom;animation-delay:.23s}.ends{display:flex;justify-content:space-between;font-size:.72rem;font-weight:900;color:#61758a;line-height:1.1}
+.boards{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:9px;min-height:0}.board{min-height:0;display:grid;grid-template-rows:auto minmax(60px,1fr) auto auto auto;align-content:stretch;gap:5px;padding:9px 11px 7px;overflow:hidden;border-top:6px solid}.board.red{border-top-color:var(--red)}.board.blue{border-top-color:var(--blue)}.board.active{box-shadow:0 0 0 3px #f0c45f,0 6px 20px #1a3d5b20}
+.head{display:flex;justify-content:space-between;align-items:center;gap:8px}.head h2{font-size:clamp(1.04rem,1.5vw,1.35rem);line-height:1.1;margin:0}.tag{font-size:.79rem;font-weight:900;color:#65778b;border-radius:30px;padding:5px 11px;background:#eff3f6}.red.active .tag{background:#ffe2e6;color:#a43848}.blue.active .tag{background:#dfeeff;color:#1d609f}
+.staff{display:flex;align-items:center;justify-content:center;width:100%;min-height:0;background:white;border:1px solid #e3e9ee;border-radius:10px;overflow:hidden;color:#7a8da2;font-weight:700;font-size:.9rem}.staff svg{width:100%;height:100%;max-width:420px;display:block}.prompt{min-height:17px;font-weight:900;text-align:center;font-size:.87rem;line-height:1.1}
+.answers{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px}.answer{font-size:clamp(.95rem,1.7vw,1.27rem);font-weight:900;background:#edf2f8;border:1px solid #d5e1ea;color:var(--ink);border-radius:11px;height:clamp(39px,6.8vh,53px);padding:3px}.answer:hover:not(:disabled){background:#dfeefd}.answer:active:not(:disabled){transform:scale(.97)}
+.feedback{height:20px;text-align:center;font-weight:900;font-size:.86rem;line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.good{color:#16844f}.bad{color:#c4444b}
+.bottom{padding:4px 10px;min-height:38px;display:flex;justify-content:space-between;align-items:center;gap:8px}.turninfo{font-size:clamp(.73rem,.92vw,.9rem);font-weight:900;color:#547184;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bottom .btn{height:32px;padding:3px 12px}
+.overlay{position:fixed;inset:0;z-index:30;background:#112740bd;display:none;align-items:center;justify-content:center;padding:25px}.overlay.show{display:flex}.modal{background:white;border-radius:20px;padding:30px;max-width:490px;width:100%;text-align:center;box-shadow:0 16px 50px #102b4f55}.modal h2{font-size:clamp(1.7rem,3vw,2.4rem);margin:0 0 10px}.modal p{line-height:1.7;font-size:1.1rem}.modal .btn{height:51px;margin-top:7px;font-size:1.05rem}
+@keyframes heave{0%{transform:rotate(-5deg) translateY(0)}100%{transform:rotate(5deg) translateY(-3px)}}@keyframes cheer{from{transform:translateY(0)}to{transform:translateY(-4px)}}
+@media(max-height:760px){.game-top{height:40px}.controls{padding:5px 8px}.field select{height:36px;font-size:.8rem}.btn{height:36px}.status{min-height:39px;padding:3px 11px}.score{font-size:1rem}.arena-title{font-size:.77rem}.arena{padding:4px 8px}.tug{height:clamp(62px,9.5vh,76px)}.board{padding:6px 8px 4px;gap:3px}.head h2{font-size:1.08rem}.tag{padding:3px 7px}.answer{height:clamp(37px,6vh,45px)}main{gap:5px;padding:5px 8px}.feedback{height:17px;line-height:17px;font-size:.8rem}.bottom{min-height:34px}.bottom .btn{height:28px}}
+@media(max-width:1170px){.brand small{display:none}.controls{grid-template-columns:1fr;gap:5px}.settings{gap:5px}.game-actions{justify-content:flex-end}.field label{font-size:.76rem}.board .answer{height:clamp(37px,6.2vh,48px)}.game-actions .btn{height:34px}.controls{padding:5px 8px}}
+@media(max-width:760px){html,body{overflow:auto;height:auto;min-height:100dvh}.game-top{height:auto;min-height:45px}.brand h1{font-size:1rem}.top-btn{font-size:.73rem;padding:6px 8px}main{display:flex;flex-direction:column}.settings{grid-template-columns:repeat(2,minmax(0,1fr))}.boards{grid-template-columns:1fr}.board{min-height:300px}.staff{height:145px;min-height:145px}.game-actions{flex-wrap:wrap}.teamname{font-size:1rem}.clock{font-size:1.5rem}.score{padding:4px}.arena{min-height:105px}.tug{min-height:75px}.bottom{margin-bottom:8px}.brand small{display:none}}
+@media(prefers-reduced-motion:reduce){.puller,.crowd{animation:none}.knot,.puller{transition:none}}
+</style></head>
+<body>
+<header class="game-top"><div class="brand"><h1>🪢 音符拔河大賽</h1><small>兩隊同步作答 · 認識音名／唱名</small></div><nav class="top-actions" aria-label="遊戲導覽"><a class="top-btn" href="index.html" id="backHome">⌂ 返回首頁</a><button class="top-btn" id="fullscreenBtn" type="button">⛶ 全螢幕</button></nav></header>
+<main>
+<section class="panel controls" aria-label="遊戲設定"><div class="settings">
+<div class="field"><label for="duration">⏱ 比賽長度</label><select id="duration"><option value="180">3 分鐘</option><option value="300">5 分鐘</option></select></div>
+<div class="field"><label for="qtime">⚡ 每題限時</label><select id="qtime"><option value="2">2 秒</option><option value="3">3 秒</option><option value="5" selected>5 秒</option><option value="10">10 秒</option></select></div>
+<div class="field"><label for="mode">🎵 學習內容</label><select id="mode"><option value="solfege">唱名 Do–Ti</option><option value="letter">音名 C–B</option></select></div>
+<div class="field"><label for="difficulty">🎯 音符難度</label><select id="difficulty"><option value="easy">簡單（五線內）</option><option value="medium">普通（含下加線）</option><option value="hard" selected>困難（G3–G5）</option></select></div>
+</div><div class="game-actions"><button class="btn primary" id="start">▶ 開始</button><button class="btn secondary" id="reset">↺ 重設</button><button class="btn secondary" id="soundToggle" aria-pressed="true">🔊 音樂開啟</button></div></section>
+<section class="panel status"><div class="teamname redname">🔴 紅隊 <span class="score" id="rs">0 分</span></div><div class="clock"><div id="gameclock">03:00</div><small id="clocklabel">比賽剩餘時間</small></div><div class="teamname bluename"><span class="score" id="bs">0 分</span> 🔵 藍隊</div></section>
+<section class="panel arena"><div class="arena-title">🏟️ 拔河競技場 <span class="crowd" aria-hidden="true">👏 🎉 📣 👏 🎊</span></div><div class="tug"><div class="rope"></div><div class="mid"></div><div class="knot" id="knot">🚩</div><div class="puller redpull">🧑‍🤝‍🧑</div><div class="puller bluepull">🧑‍🤝‍🧑</div></div><div class="ends"><span>🔴 紅隊終點</span><span>中央線</span><span>藍隊終點 🔵</span></div></section>
+<section class="boards">
+<article class="panel board red" id="rb"><div class="head"><h2>🔴 紅隊</h2><span class="tag" id="rtag">等待開始</span></div><div class="staff" id="rstaff">按「開始」出題</div><div class="prompt" id="rprompt">看音符，選答案</div><div class="answers" id="rans"></div><div class="feedback" id="rfb" aria-live="polite"></div></article>
+<article class="panel board blue" id="bb"><div class="head"><h2>🔵 藍隊</h2><span class="tag" id="btag">等待開始</span></div><div class="staff" id="bstaff">按「開始」出題</div><div class="prompt" id="bprompt">看音符，選答案</div><div class="answers" id="bans"></div><div class="feedback" id="bfb" aria-live="polite"></div></article>
+</section><section class="panel bottom"><div class="turninfo" id="info" aria-live="polite">兩隊同時出題；雙方作答完畢立即換題，否則等待倒數結束。</div><button class="btn secondary" id="end" disabled>■ 結束比賽</button></section>
+</main>
+<div class="overlay" id="overlay" role="dialog" aria-modal="true"><div class="modal"><h2 id="resulttitle">比賽結束！</h2><p id="resulttext"></p><button class="btn primary" id="again">再玩一次</button><p><a href="index.html" style="color:#376889;font-weight:900">⌂ 返回遊戲首頁</a></p></div></div>
+
+<script>
+
+
+(()=>{'use strict';
+const $=id=>document.getElementById(id);
+
+// Original synthesized game soundtrack. Runs only after the user starts the game.
+let audioCtx=null, musicTimer=null, soundOn=true, beatIndex=0;
+const tune=[0,3,7,10,7,3,5,8,12,8,5,3,0,5,7,10];
+function tone(freq,when,duration,volume,type='triangle'){
+ if(!audioCtx)return;
+ const o=audioCtx.createOscillator(),g=audioCtx.createGain();
+ o.type=type;o.frequency.setValueAtTime(freq,when);
+ g.gain.setValueAtTime(0.0001,when);
+ g.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),when+.012);
+ g.gain.exponentialRampToValueAtTime(.0001,when+duration);
+ o.connect(g);g.connect(audioCtx.destination);o.start(when);o.stop(when+duration+.02);
+}
+function musicBeat(){
+ if(!running||!soundOn||!audioCtx)return;
+ const t=audioCtx.currentTime+.01;
+ const semitone=tune[beatIndex%tune.length];
+ tone(196*Math.pow(2,semitone/12),t,.17,.025,'triangle');
+ if(beatIndex%2===0)tone(98*Math.pow(2,(beatIndex%8===0?0:5)/12),t,.28,.023,'sine');
+ if(beatIndex%4===0)tone(65,t,.11,.045,'sine');
+ else if(beatIndex%4===2)tone(185,t,.055,.012,'square');
+ beatIndex++;
+}
+function stopMusic(){if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null}}
+function startMusic(){
+ stopMusic();if(!soundOn||!running)return;
+ try{
+  if(!audioCtx)audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended')audioCtx.resume();
+  beatIndex=0;musicBeat();musicTimer=setInterval(musicBeat,230);
+ }catch(e){soundOn=false;updateSoundButton()}
+}
+function updateSoundButton(){
+ $('soundToggle').textContent=soundOn?'🔊 音樂開啟':'🔇 音樂關閉';
+ $('soundToggle').setAttribute('aria-pressed',String(soundOn));
+}
+$('soundToggle').onclick=()=>{
+ soundOn=!soundOn;updateSoundButton();
+ if(soundOn&&running)startMusic();else stopMusic();
+};
+
+const names=['C','D','E','F','G','A','B'], sol=['Do','Re','Mi','Fa','Sol','La','Ti'];
+const di=(l,o)=>o*7+names.indexOf(l);
+const from=i=>({letter:names[i%7],octave:Math.floor(i/7),index:i});
+const G3=di('G',3),G5=di('G',5),E4=di('E',4),F5=di('F',5);
+let running=false,red=0,blue=0,pos=0,remaining=180,gameTimer=null,qTimer=null,nextTimer=null;
+let round=0,answered=[false,false],current=[null,null],deadline=0,questionLimit=5;
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+function pool(){
+ const d=$('difficulty').value,a=[];
+ for(let i=G3;i<=G5;i++){
+  if(d==='easy'&&(i<E4||i>F5))continue;
+  if(d==='medium'&&i>F5)continue;
+  a.push(from(i));
+ }
+ return a;
+}
+function label(n){return $('mode').value==='letter'?n.letter:sol[n.index%7]}
+function draw(n){
+ const W=390,H=190,L=42,R=360,bottom=127,step=14;
+ const y=bottom-(n.index-E4)*(step/2);
+ let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${n.letter}${n.octave} 音符"><rect width="${W}" height="${H}" fill="white"/>`;
+ for(let j=0;j<5;j++)s+=`<line x1="${L}" y1="${bottom-j*step}" x2="${R}" y2="${bottom-j*step}" stroke="#26344a" stroke-width="1.65"/>`;
+ // True vector outline from a music notation font, independent of device fonts.
+ s+=`<path d="M314 801Q300 854 291.0 906.0Q282 958 282 1012Q282 1059 288.5 1100.5Q295 1142 307 1177Q320 1217 341.0 1252.5Q362 1288 385.5 1311.0Q409 1334 427 1334Q451 1334 493 1249Q514 1206 524.0 1156.0Q534 1106 534 1049Q534 978 515.0 907.5Q496 837 459.5 775.0Q423 713 372 666L407 498Q422 500 432.0 501.0Q442 502 447 502Q508 502 556.0 467.5Q604 433 632.5 377.0Q661 321 661 254Q661 177 621.5 115.5Q582 54 503 25Q508 8 532 -117Q538 -147 541.0 -164.5Q544 -182 545.0 -195.0Q546 -208 546 -225Q546 -275 521.5 -314.5Q497 -354 455.5 -376.0Q414 -398 363 -398Q311 -398 271.0 -378.5Q231 -359 208.0 -324.5Q185 -290 185 -245Q185 -197 211.5 -165.0Q238 -133 287 -133Q329 -133 355.5 -163.5Q382 -194 382 -236Q382 -272 357.0 -299.0Q332 -326 292 -326H282Q308 -365 364 -365Q433 -365 472.0 -320.0Q511 -275 511 -205Q511 -188 507.0 -159.5Q503 -131 493 -91Q483 -51 477.5 -25.0Q472 1 470 12Q436 2 390 2Q304 2 222 52Q142 102 96.0 184.0Q50 266 50 361Q50 451 91 530Q132 609 192.5 675.0Q253 741 314 801ZM341 826Q364 838 390.0 870.5Q416 903 440.0 945.0Q464 987 479.0 1029.5Q494 1072 494 1106Q494 1142 483.0 1163.0Q472 1184 445 1184Q421 1184 398.5 1162.0Q376 1140 358.5 1103.5Q341 1067 331.0 1022.0Q321 977 321 930Q321 898 327.5 872.0Q334 846 341 826ZM398 379Q371 373 347.0 353.5Q323 334 308.5 306.5Q294 279 294 248Q294 223 307.0 196.5Q320 170 339 154Q352 142 365 136Q380 129 380 123Q380 120 370 117Q332 126 301.5 151.0Q271 176 253.5 211.5Q236 247 236 287Q236 330 253.5 370.0Q271 410 302.5 442.0Q334 474 374 490L345 641Q229 547 174.5 456.5Q120 366 120 277Q120 212 154.0 156.0Q188 100 247.0 65.5Q306 31 380 31Q400 31 420.5 35.0Q441 39 464 45ZM495 55Q593 97 593 227Q593 270 571.0 305.5Q549 341 512.0 362.0Q475 383 429 383Z" transform="translate(49 127) scale(0.065 -0.065)" fill="#26344a"/>`;
+ // Ledger lines at C4 and A3, only when the current note requires them.
+ for(let i=E4-2;i>=n.index;i-=2){
+  const ly=bottom+(E4-i)*step/2;
+  s+=`<line x1="162" y1="${ly}" x2="205" y2="${ly}" stroke="#26344a" stroke-width="1.65"/>`;
+ }
+ const x=184;
+ s+=`<ellipse cx="${x}" cy="${y}" rx="11" ry="7.5" transform="rotate(-20 ${x} ${y})" fill="#26344a"/>`;
+ // Standard notation: stems up below B4; stems down on B4 and above.
+ if(n.index<di('B',4))s+=`<line x1="${x+10}" y1="${y-2}" x2="${x+10}" y2="${y-49}" stroke="#26344a" stroke-width="2.3"/>`;
+ else s+=`<line x1="${x-10}" y1="${y+2}" x2="${x-10}" y2="${y+49}" stroke="#26344a" stroke-width="2.3"/>`;
+ return s+'</svg>';
+}
+function scores(){
+ $('rs').textContent=red+' 分';$('bs').textContent=blue+' 分';
+ $('knot').style.left=(50+pos*8)+'%';
+ document.querySelector('.redpull').style.left=(12+pos*2.4)+'%';
+ document.querySelector('.bluepull').style.right=(12-pos*2.4)+'%';
+}
+function setTags(){
+ for(let t=0;t<2;t++){
+  const p=t===0?'r':'b';
+  $(p+'b').classList.toggle('active',running&&!answered[t]);
+  $(p+'tag').textContent=!running?'等待中':answered[t]?'已作答':'作答中';
+ }
+}
+function setQuestionInfo(left){
+ $('info').textContent=`第 ${round} 題　｜　⏱ 本題 ${Math.max(0,Math.ceil(left))} 秒　｜　紅隊：${answered[0]?'完成':'作答中'}　藍隊：${answered[1]?'完成':'作答中'}`;
+}
+function makeQuestion(){
+ if(!running)return;
+ clearInterval(qTimer);clearTimeout(nextTimer);
+ round++;answered=[false,false];questionLimit=Number($('qtime').value);
+ const choices=$('mode').value==='letter'?names:sol;
+ const notePool=pool();
+ for(let t=0;t<2;t++){
+  const p=t===0?'r':'b',n=notePool[Math.floor(Math.random()*notePool.length)];
+  current[t]=n;
+  $(p+'staff').innerHTML=draw(n);
+  $(p+'prompt').textContent='這個音符是？';
+  $(p+'fb').textContent='';$(p+'fb').className='feedback';
+  const box=$(p+'ans');box.innerHTML='';
+  for(const choice of choices){
+   const b=document.createElement('button');
+   b.className='answer';b.textContent=choice;
+   b.onclick=()=>answer(t,choice,round);
+   box.appendChild(b);
+  }
+ }
+ setTags();
+ const thisRound=round;
+ deadline=performance.now()+questionLimit*1000;
+ setQuestionInfo(questionLimit);
+ qTimer=setInterval(()=>{
+  if(!running||round!==thisRound){clearInterval(qTimer);return;}
+  const left=Math.max(0,(deadline-performance.now())/1000);
+  setQuestionInfo(left);
+  if(left<=0){
+   clearInterval(qTimer);
+   for(let t=0;t<2;t++){
+    if(answered[t])continue;
+    answered[t]=true;
+    const p=t===0?'r':'b';
+    $(p+'fb').textContent='時間到！正確答案：'+label(current[t]);
+    $(p+'fb').className='feedback bad';
+    $(p+'ans').querySelectorAll('button').forEach(b=>b.disabled=true);
+   }
+   setTags();
+   if(Math.abs(pos)>=5){finish(pos<0?0:1);return;}nextTimer=setTimeout(()=>{if(running&&round===thisRound)makeQuestion()},450);
+  }
+ },50);
+}
+function answer(t,v,questionNumber){
+ if(!running||round!==questionNumber||answered[t]||performance.now()>=deadline)return;
+ answered[t]=true;
+ const p=t===0?'r':'b',good=v===label(current[t]);
+ $(p+'ans').querySelectorAll('button').forEach(b=>b.disabled=true);
+ if(good){
+  if(t===0){red++;pos=Math.max(-5,pos-1)}
+  else{blue++;pos=Math.min(5,pos+1)}
+  $(p+'fb').textContent='答對了！+1 分';
+  $(p+'fb').className='feedback good';
+  scores();
+ }else{
+  $(p+'fb').textContent='答錯了！正確答案：'+label(current[t]);
+  $(p+'fb').className='feedback bad';
+ }
+ setTags();
+ setQuestionInfo(Math.max(0,(deadline-performance.now())/1000));
+ // Both teams answer independently. Advance only after both have submitted,
+ // or when the shared question timer expires.
+ if(answered[0]&&answered[1]){
+  clearInterval(qTimer);
+  if(Math.abs(pos)>=5){finish(pos<0?0:1);return;}
+  nextTimer=setTimeout(()=>{if(running&&round===questionNumber)makeQuestion()},400);
+ }
+}
+function finish(winner=null){
+ if(!running)return;
+ running=false;stopMusic();clearInterval(gameTimer);clearInterval(qTimer);clearTimeout(nextTimer);
+ $('end').disabled=true;$('start').disabled=false;$('clocklabel').textContent='比賽結束';for(const id of ['duration','qtime','mode','difficulty'])$(id).disabled=false;
+ let title,text;
+ if(winner===0){title='🔴 紅隊獲勝！';text=`紅隊拉到終點！紅隊 ${red} 分、藍隊 ${blue} 分。`}
+ else if(winner===1){title='🔵 藍隊獲勝！';text=`藍隊拉到終點！紅隊 ${red} 分、藍隊 ${blue} 分。`}
+ else if(red>blue){title='🔴 紅隊獲勝！';text=`時間到！紅隊 ${red} 分、藍隊 ${blue} 分。`}
+ else if(blue>red){title='🔵 藍隊獲勝！';text=`時間到！紅隊 ${red} 分、藍隊 ${blue} 分。`}
+ else{title='🤝 平手！';text=`時間到！兩隊都是 ${red} 分。`}
+ $('resulttitle').textContent=title;$('resulttext').textContent=text;
+ $('overlay').classList.add('show');$('info').textContent='比賽結束！';
+ document.querySelectorAll('.answers button').forEach(b=>b.disabled=true);
+ setTags();
+}
+function start(){
+ clearInterval(gameTimer);clearInterval(qTimer);clearTimeout(nextTimer);
+ running=true;red=blue=pos=0;round=0;remaining=Number($('duration').value);
+ $('overlay').classList.remove('show');$('start').disabled=true;$('end').disabled=false;
+ for(const id of ['duration','qtime','mode','difficulty'])$(id).disabled=true;
+ scores();$('gameclock').textContent=fmt(remaining);$('clocklabel').textContent='比賽倒數';
+ makeQuestion();startMusic();
+ const gameDeadline=performance.now()+remaining*1000;
+ gameTimer=setInterval(()=>{
+  if(!running)return;
+  remaining=Math.max(0,(gameDeadline-performance.now())/1000);
+  $('gameclock').textContent=fmt(remaining);
+  if(remaining<=0){$('gameclock').textContent='00:00';finish();}
+ },50);
+}
+function reset(){
+ running=false;stopMusic();clearInterval(gameTimer);clearInterval(qTimer);clearTimeout(nextTimer);
+ round++;red=blue=pos=0;remaining=Number($('duration').value);
+ $('overlay').classList.remove('show');$('start').disabled=false;$('end').disabled=true;
+ for(const id of ['duration','qtime','mode','difficulty'])$(id).disabled=false;
+ $('gameclock').textContent=fmt(remaining);$('clocklabel').textContent='比賽倒數';scores();
+ for(const p of ['r','b']){
+  $(p+'staff').textContent='開始後顯示音符';
+  $(p+'prompt').textContent='開始比賽後看音符作答';
+  $(p+'ans').innerHTML='';$(p+'fb').textContent='';$(p+'fb').className='feedback';
+  $(p+'tag').textContent='等待中';$(p+'b').classList.remove('active');
+ }
+ $('info').textContent='設定好比賽條件後，按「開始比賽」。';
+}
+$('start').onclick=start;
+$('reset').onclick=reset;
+$('end').onclick=()=>{if(running)finish()};
+$('again').onclick=()=>{for(const id of ['duration','qtime','mode','difficulty'])$(id).disabled=false;start()};
+$('duration').onchange=()=>{if(!running){remaining=Number($('duration').value);$('gameclock').textContent=fmt(remaining)}};
+$('mode').onchange=()=>{if(!running)reset()};
+$('difficulty').onchange=()=>{if(!running)reset()};
+reset();
+})();
+
+
+
+const fsButton=document.getElementById('fullscreenBtn');
+if(fsButton)fsButton.addEventListener('click',async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen()}catch(e){}});
+document.addEventListener('fullscreenchange',()=>{if(fsButton)fsButton.textContent=document.fullscreenElement?'⛶ 離開全螢幕':'⛶ 全螢幕'});
+
+</script>
+</body></html>
